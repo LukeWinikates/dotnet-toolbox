@@ -11,7 +11,7 @@
 
 ## Getting Started
 
-To build the project, you'll need Node.js and npm. You can install node via Homebrew
+To build the ui project, you'll need Node.js and npm. You can install node via Homebrew
  
 `brew install node` 
  
@@ -24,3 +24,18 @@ Once that's done, you'll need to install the gulp command line utility
  and the npm dependencies of the ui project
  
  `cd dotnet-toolbox.ui; npm install`. 
+ 
+To build the API project, refer to Microsoft's document on how to install the DNX runtime:
+
+http://docs.asp.net/en/latest/getting-started/index.html
+
+This app is built on Mac OSX and the production instances are/will be hosted in a linux virtual machine.
+
+Once you have the `dnu` and `dnx` executables on your path run these commands:
+
+```
+$ dnu restore
+$ dnx -p dotnet-toolbox.api web
+```
+
+the `-p` flag specifies the path to the directory containing the .NET application, and is not required if you run `dnx web` from that directory directly

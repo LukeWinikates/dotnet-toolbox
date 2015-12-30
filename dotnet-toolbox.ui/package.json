@@ -1,0 +1,19 @@
+{
+  "name": "dotnet-toolbox",
+  "version": "0.0.1",
+  "description": ".NET Toolbox is a resource for discovering 3rd-party libraries for use in building applications on the .NET Framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "y"
+  },
+  "author": "Luke Winikates",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-connect": "^2.3.1"
+  }
+}

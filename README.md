@@ -1,3 +1,4 @@
+![](https://travis-ci.org/LukeWinikates/dotnet-toolbox.svg?branch=master)
 # .NET Toolbox
 
 ## Goals of this Project

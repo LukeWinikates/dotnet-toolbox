@@ -29,7 +29,7 @@ To build the API project, refer to Microsoft's document on how to install the DN
 
 http://docs.asp.net/en/latest/getting-started/index.html
 
-This app is built on Mac OSX and the production instances are/will be hosted in a linux virtual machine.
+This app is built on Mac OSX and the production instance is hosted on a linux virtual machine.
 
 Once you have the `dnu` and `dnx` executables on your path run these commands:
 
@@ -39,3 +39,26 @@ $ dnx -p dotnet-toolbox.api web
 ```
 
 the `-p` flag specifies the path to the directory containing the .NET application, and is not required if you run `dnx web` from that directory directly
+
+## Pushing to Cloud Foundry
+
+The staging instance is here:
+
+http://dotnet-toolbox-staging.cfapps.pez.pivotal.io/
+
+To push, you will need to point your cf cli to the pez api endpoint
+
+```
+cf api https://api.run.pez.pivotal.io
+```
+
+To push to staging (somewhat awkward at the moment):
+
+```
+cd dotnet-toolbox.ui
+gulp prepush
+cd ../dotnet-toolbox.api
+cf push dotnet-toolbox-staging -b https://github.com/cloudfoundry-community/asp.net5-buildpack.git
+```
+
+If you are creating a new CF app, replace `dotnet-toolbox-staging` with an appname of your own choice

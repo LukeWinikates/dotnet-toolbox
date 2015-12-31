@@ -38,6 +38,7 @@ namespace dotnet_toolbox.api
 
             app.UseIISPlatformHandler();
 
+            app.UseDefaultFiles();
             app.UseStaticFiles();
 
             app.UseMvc();

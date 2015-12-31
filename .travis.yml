@@ -1,8 +1,17 @@
 language: csharp
 mono:
- - beta
-
-install: curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh | sh && source ~/.dnx/dnvm/dnvm.sh && dnvm upgrade
-
-script:
-  dnu restore && dnx -p dotnet-toolbox.api.tests test
+- beta
+install: curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh
+  | sh && source ~/.dnx/dnvm/dnvm.sh && dnvm upgrade
+script: dnu restore && dnx -p dotnet-toolbox.api.tests test
+deploy:
+  provider:
+    provider: cloudfoundry
+  api: https://api.run.pez.pivotal.io
+  username: luke.winikates@gmail.com
+  password:
+    secure: pYf6Pqy6zXGqK5/sghHlN4sdW7VkyKxKyadlHciRAl3fWJXp8R4WK0DUq1PE5SejhHMZab0fPk4P0psA3GyIyjgeeGu1XD1InPnTi5aFSzchXSeQkW+xQ+F8D1jqDzJGbrLshMuU+eKAe92iK3WZGLagoW3bUOwQHQc9sAIJEdYqRLjpMEn0wc3Lviv+H0gphJejXKpDSB3j3OAUoAYcgIxhfhpOkKDdUFy6jJ6u3lgbvOfx001Fij3nGagYvSfLr1oqpGwLV73a6/7eCLOA4FyPXEWfZ48UFAHDQsHkh83HHMK3w234Z2/QMvmlWg0m521RAFhWgupW3q3TtGJMIdB6HY98TCVhaSVn0kgN/4Oj/G5JWOsBsFpycOEAoY8/KGArrJG6zxwz4bedc1tVO9zDnPgHFa487UBAD1eI//6scuUuoaUte9zr4YUe3zn8ZyMtHDEYEHrfQogCa1FOqKOPpgKujlhaV92DMS/eFcAk/zgZQJRapPB5j3sVVc5q8zQvrMUC7Bos6Xk3vggdvdTcUflFoIGn2B6Dr9uzcHhX2kj2Q/GYOBI8CiJVbd70ymeI77DY7odjiqTenipODufr8Gm28tmyRCbf38vX29GMDFi/Jf+CB7No/t3fOMIMVW6A5RZNP6FOP5El/8817Zpn/rM0LA88dsCIvyOyDn0=
+  organization: pivot-lwinikates
+  space: dotnet-toolbox-staging
+  on:
+    repo: LukeWinikates/dotnet-toolbox

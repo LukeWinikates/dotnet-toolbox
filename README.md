@@ -58,8 +58,8 @@ To push to staging (somewhat awkward at the moment):
 ```
 cd dotnet-toolbox.ui
 gulp prepush
-cd ../dotnet-toolbox.api
-cf push dotnet-toolbox-staging -b https://github.com/cloudfoundry-community/asp.net5-buildpack.git
+cd ..
+cf push
 ```
 
 If you are creating a new CF app, replace `dotnet-toolbox-staging` with an appname of your own choice

@@ -3,7 +3,9 @@ mono:
 - beta
 install: curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh
   | sh && source ~/.dnx/dnvm/dnvm.sh && dnvm upgrade
-script: dnu restore && dnx -p dotnet-toolbox.api.tests test
+script: 
+  - dnu restore && dnx -p dotnet-toolbox.api.tests test
+  - gulp --gulpfile dotnet-toolbox.ui/gulpfile.js test
 deploy:
   provider:
     provider: cloudfoundry

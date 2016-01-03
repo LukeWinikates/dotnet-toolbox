@@ -4,6 +4,7 @@ var jasmineBrowser = require('gulp-jasmine-browser');
 var webpack = require('webpack-stream');
 var plumber = require('gulp-plumber');
 require('babel-loader');
+var JasminePlugin = require('gulp-jasmine-browser/webpack/jasmine-plugin');
 
 gulp.task('webserver', function () {
     connect.server();
@@ -19,13 +20,14 @@ gulp.task('prepush', ['build'], function () {
         .pipe(gulp.dest('../dotnet-toolbox.api/wwwroot'));
 });
 
-gulp.task('jasmine', function () {
-    var JasminePlugin = require('gulp-jasmine-browser/webpack/jasmine-plugin');
+
+function sharedJasmineSetup(opts) {
+    var opts = opts || {};
     var plugin = new JasminePlugin();
     return gulp.src(['src/**/*js', 'spec/**/*spec.js'])
         .pipe(plumber())
         .pipe(webpack({
-            watch: true,
+            watch: !!opts.watch,
             module: {
                 loaders: [
                     {
@@ -36,9 +38,20 @@ gulp.task('jasmine', function () {
                 ]
             }, output: {filename: 'spec.js'},
             plugins: [plugin]
-        }))
+        }));
+}
+
+gulp.task('jasmine', function () {
+    return sharedJasmineSetup({watch:true})
         .pipe(jasmineBrowser.specRunner())
         .pipe(jasmineBrowser.server());
+});
+
+
+gulp.task('jasmine-phantom', function () {
+    return sharedJasmineSetup()
+        .pipe(jasmineBrowser.specRunner({console: true}))
+        .pipe(jasmineBrowser.headless());
 });
 
 gulp.task('default', ['webserver']);

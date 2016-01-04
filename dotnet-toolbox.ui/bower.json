@@ -1,0 +1,23 @@
+{
+  "name": "dotnet-toolbox.ui",
+  "version": "0.0.1",
+  "homepage": "https://github.com/LukeWinikates/dotnet-toolbox",
+  "authors": [
+    "Luke Winikates <luke.winikates@gmail.com>"
+  ],
+  "moduleType": [
+    "globals"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "pivotal-ui": "pivotal-cf/pivotal-ui#~2.0.0",
+    "bootstrap-sass": "~3.3.6"
+  }
+}

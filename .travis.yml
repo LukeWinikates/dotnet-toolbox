@@ -4,10 +4,12 @@ mono:
 install:
   - curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh | sh && source ~/.dnx/dnvm/dnvm.sh && dnvm upgrade
   - npm install -g gulp
-  - (cd dotnet-toolbox.ui; npm install)
-script: 
+  - npm install -g bower
+  - (cd dotnet-toolbox.ui; npm install && bower install)
+script:
   - dnu restore && dnx -p dotnet-toolbox.api.tests test
   - gulp --gulpfile dotnet-toolbox.ui/gulpfile.js jasmine-phantom
+  - gulp --gulpfile dotnet-toolbox.ui/gulpfile.js prepush
 deploy:
   provider:
     provider: cloudfoundry

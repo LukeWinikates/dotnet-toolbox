@@ -1,4 +1,4 @@
-![](https://travis-ci.org/LukeWinikates/dotnet-toolbox.svg?branch=master)
+[![Build Status](https://travis-ci.org/LukeWinikates/dotnet-toolbox.svg)](https://travis-ci.org/LukeWinikates/dotnet-toolbox)
 # .NET Toolbox
 
 ## Goals of this Project

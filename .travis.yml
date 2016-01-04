@@ -7,7 +7,7 @@ install:
   - (cd dotnet-toolbox.ui; npm install)
 script: 
   - dnu restore && dnx -p dotnet-toolbox.api.tests test
-  - gulp --gulpfile dotnet-toolbox.ui/gulpfile.js test
+  - gulp --gulpfile dotnet-toolbox.ui/gulpfile.js jasmine-phantom
 deploy:
   provider:
     provider: cloudfoundry

@@ -11,9 +11,9 @@ script:
   - gulp --gulpfile dotnet-toolbox.ui/gulpfile.js jasmine-phantom
   - gulp --gulpfile dotnet-toolbox.ui/gulpfile.js prepush
 deploy:
+  edge: true
   skip_cleanup: true
-  provider:
-    provider: cloudfoundry
+  provider: cloudfoundry
   api: https://api.run.pez.pivotal.io
   username: luke.winikates@gmail.com
   password:

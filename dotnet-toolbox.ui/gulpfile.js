@@ -14,7 +14,8 @@ var JasminePlugin = require('gulp-jasmine-browser/webpack/jasmine-plugin');
 var paths = {
   jade: 'src/html/**/*.jade',
   sass: 'src/styles/**/*.scss',
-  fonts: 'bower_components/pivotal-ui/src/pivotal-ui/components/typography/fonts/**/*'
+  fonts: 'bower_components/pivotal-ui/src/pivotal-ui/components/typography/fonts/**/*',
+  dotnetWWWRoot: '../src/dotnet-toolbox.api/wwwroot'
 };
 
 gulp.task('build', ['sass', 'fonts', 'jade']);
@@ -50,7 +51,7 @@ gulp.task('watch', function () {
 
 gulp.task('prepush', ['build'], function () {
   return gulp.src('dist/**/*')
-    .pipe(gulp.dest('../dotnet-toolbox.api/wwwroot'));
+    .pipe(gulp.dest(paths.dotnetWWWRoot));
 });
 
 function sharedJasmineSetup(opts) {

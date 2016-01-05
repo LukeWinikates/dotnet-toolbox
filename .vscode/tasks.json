@@ -16,7 +16,7 @@
     "showOutput": "silent",
     "args": [
         "-p",
-        "dotnet-toolbox.api.tests"
+        "test/dotnet-toolbox.api.tests"
     ],
     "tasks": [
         {

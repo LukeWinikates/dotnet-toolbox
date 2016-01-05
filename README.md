@@ -36,7 +36,7 @@ Once you have the `dnu` and `dnx` executables on your path run these commands:
 
 ```
 $ dnu restore
-$ dnx -p dotnet-toolbox.api web
+$ dnx -p src/dotnet-toolbox.api web
 ```
 
 the `-p` flag specifies the path to the directory containing the .NET application, and is not required if you run `dnx web` from that directory directly

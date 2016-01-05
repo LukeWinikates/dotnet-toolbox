@@ -5,5 +5,5 @@ applications:
   instances: 1
   host: dotnet-toolbox-staging
   domain: cfapps.pez.pivotal.io
-  path: dotnet-toolbox.api
+  path: src/dotnet-toolbox.api
   buildpack: https://github.com/cloudfoundry-community/asp.net5-buildpack.git

@@ -7,6 +7,7 @@ var jade = require('gulp-jade');
 var sass = require('gulp-sass');
 var rename = require('gulp-rename');
 var replace = require('gulp-replace');
+var path = require("path");
 
 require('babel-loader');
 var JasminePlugin = require('gulp-jasmine-browser/webpack/jasmine-plugin');
@@ -15,12 +16,13 @@ var paths = {
   jade: 'src/html/**/*.jade',
   sass: 'src/styles/**/*.scss',
   fonts: 'bower_components/pivotal-ui/src/pivotal-ui/components/typography/fonts/**/*',
+  js: 'src/**/*.js',
   dotnetWWWRoot: '../src/dotnet-toolbox.api/wwwroot'
 };
 
-gulp.task('build', ['sass', 'fonts', 'jade']);
+gulp.task('build', ['sass', 'fonts', 'jade', 'components']);
 
-gulp.task('fonts', function(){
+gulp.task('fonts', function () {
   gulp.src(paths.fonts)
     .pipe(gulp.dest('dist/styles/fonts'));
 });
@@ -44,9 +46,27 @@ gulp.task('sass', function () {
     .pipe(gulp.dest('./dist/styles'));
 });
 
+gulp.task('components', function () {
+  return gulp.src([paths.js])
+    .pipe(plumber())
+    .pipe(webpack({
+      module: {
+        loaders: [
+          {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader?stage=0&optional[]=runtime&loose=true'
+          }
+        ]
+      },
+      output: {filename: 'application.js'}
+    })).pipe(gulp.dest('./dist/'));
+});
+
 gulp.task('watch', function () {
   gulp.watch(paths.jade, ['jade']);
   gulp.watch(paths.sass, ['sass']);
+  gulp.watch(paths.js, ['components']);
 });
 
 gulp.task('prepush', ['build'], function () {
@@ -57,7 +77,7 @@ gulp.task('prepush', ['build'], function () {
 function sharedJasmineSetup(opts) {
   var opts = opts || {};
   var plugin = new JasminePlugin();
-  return gulp.src(['src/**/*js', 'spec/**/*spec.js'])
+  return gulp.src([paths.js, 'spec/**/*spec.js'])
     .pipe(plumber())
     .pipe(webpack({
       watch: !!opts.watch,

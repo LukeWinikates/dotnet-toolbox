@@ -63,3 +63,7 @@ cf push
 ```
 
 If you are creating a new CF app, replace `dotnet-toolbox-staging` with an appname of your own choice
+
+## ASP.NET 5 reference
+
+For a good starting point to learn about ASP.NET 5, check out Microsoft's documentation [here](http://docs.asp.net/en/latest/conceptual-overview/index.html)

@@ -11,6 +11,7 @@ script:
   - gulp --gulpfile dotnet-toolbox.ui/gulpfile.js jasmine-phantom
   - gulp --gulpfile dotnet-toolbox.ui/gulpfile.js prepush
 deploy:
+  skip_cleanup: true
   provider:
     provider: cloudfoundry
   api: https://api.run.pez.pivotal.io
@@ -21,3 +22,4 @@ deploy:
   space: dotnet-toolbox-staging
   on:
     repo: LukeWinikates/dotnet-toolbox
+    branch: master

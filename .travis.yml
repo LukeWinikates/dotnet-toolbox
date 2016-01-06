@@ -23,5 +23,5 @@ deploy:
   organization: pivot-lwinikates
   space: dotnet-toolbox-staging
   on:
-    repo: LukeWinikates/dotnet-toolbox
+    repo: dotnet-toolbox/dotnet-toolbox
     branch: master

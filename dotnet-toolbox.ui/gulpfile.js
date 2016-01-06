@@ -89,7 +89,7 @@ gulp.task('prepush', ['build'], function () {
 });
 
 function sharedJasmineSetup(opts) {
-  var opts = opts || {};
+  opts = opts || {};
   var plugin = new JasminePlugin();
   return gulp.src([paths.js, 'spec/**/*spec.js'])
     .pipe(plumber())

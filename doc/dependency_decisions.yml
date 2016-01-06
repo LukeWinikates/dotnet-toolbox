@@ -1,21 +1,67 @@
 ---
 - - :whitelist
   - MIT
-  - :who:
-    :why:
+  - :who: 
+    :why: 
     :when: 2016-01-05 00:46:00.074999000 Z
 - - :whitelist
   - Apache 2.0
-  - :who:
-    :why:
+  - :who: 
+    :why: 
     :when: 2016-01-05 00:46:14.888037000 Z
 - - :whitelist
   - New BSD
-  - :who:
-    :why:
+  - :who: 
+    :why: 
     :when: 2016-01-05 00:46:21.001521000 Z
 - - :ignore_group
   - devDependencies
-  - :who:
-    :why:
+  - :who: 
+    :why: 
     :when: 2016-01-05 00:46:51.653050000 Z
+- - :approve
+  - amdefine
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2016-01-06 21:20:21.503163000 Z
+- - :license
+  - through
+  - MIT
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2016-01-06 21:21:56.975044000 Z
+- - :license
+  - core-js
+  - MIT
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2016-01-06 21:22:18.572026000 Z
+- - :license
+  - js-tokens
+  - MIT
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2016-01-06 21:22:36.769157000 Z
+- - :license
+  - esprima-fb
+  - SimplifiedBSD
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2016-01-06 21:23:41.257938000 Z
+- - :whitelist
+  - BSD
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2016-01-06 21:24:42.391452000 Z
+- - :whitelist
+  - SimplifiedBSD
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2016-01-06 21:25:15.361138000 Z

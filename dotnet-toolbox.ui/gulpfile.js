@@ -20,7 +20,13 @@ var paths = {
   jade: 'src/html/**/*.jade',
   sass: 'src/styles/**/*.scss',
   fonts: 'bower_components/pivotal-ui/src/pivotal-ui/components/typography/fonts/**/*',
-  js: 'src/**/*.js',
+  js: {
+    components: 'src/js/components/**/*.js',
+    all: 'src/js/**/*.js',
+    boot: 'src/js/boot.js',
+    spec: 'spec/**/*spec.js',
+    es5Shim: 'node_modules/es5-shim/es5-shim.js'
+  },
   dotnetWWWRoot: '../src/dotnet-toolbox.api/wwwroot'
 };
 
@@ -59,7 +65,7 @@ gulp.task('sass', function () {
 });
 
 gulp.task('components', function () {
-  return gulp.src([paths.js])
+  return gulp.src([paths.js.boot])
     .pipe(plumber())
     .pipe(webpack({
       module: {
@@ -80,7 +86,7 @@ gulp.task('watch', function () {
   livereload.listen();
   gulp.watch(paths.jade, ['jade']);
   gulp.watch(paths.sass, ['sass']);
-  gulp.watch(paths.js, ['components']);
+  gulp.watch(paths.js.all, ['components']);
 });
 
 gulp.task('prepush', ['build'], function () {
@@ -91,7 +97,7 @@ gulp.task('prepush', ['build'], function () {
 function sharedJasmineSetup(opts) {
   opts = opts || {};
   var plugin = new JasminePlugin();
-  return gulp.src([paths.js, 'spec/**/*spec.js'])
+  return gulp.src([paths.js.es5Shim, paths.js.components, paths.js.spec])
     .pipe(plumber())
     .pipe(webpack({
       watch: !!opts.watch,

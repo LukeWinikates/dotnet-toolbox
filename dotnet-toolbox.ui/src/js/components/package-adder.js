@@ -1,5 +1,4 @@
 var React = require('react');
-var ReactDOM = require('react/lib/ReactDOM');
 
 var PackageAdder = React.createClass({
   render() {
@@ -20,4 +19,4 @@ var PackageAdder = React.createClass({
   }
 });
 
-ReactDOM.render(<PackageAdder />, document.getElementById('root'));
+export default PackageAdder;

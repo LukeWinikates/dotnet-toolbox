@@ -10,6 +10,7 @@ var rename = require('gulp-rename');
 var replace = require('gulp-replace');
 var path = require("path");
 var url = require('url');
+var livereload = require('gulp-livereload');
 
 require('babel-loader');
 var JasminePlugin = require('gulp-jasmine-browser/webpack/jasmine-plugin');
@@ -27,7 +28,8 @@ gulp.task('build', ['sass', 'fonts', 'jade', 'components']);
 
 gulp.task('fonts', function () {
   gulp.src(paths.fonts)
-    .pipe(gulp.dest('dist/styles/fonts'));
+    .pipe(gulp.dest('dist/styles/fonts'))
+    .pipe(livereload());
 });
 
 
@@ -45,13 +47,15 @@ gulp.task('jade', function () {
     .pipe(rename(function (path) {
       path.extname = '.html'
     }))
-    .pipe(gulp.dest('dist/'));
+    .pipe(gulp.dest('dist/'))
+    .pipe(livereload());
 });
 
 gulp.task('sass', function () {
   return gulp.src(paths.sass)
     .pipe(sass().on('error', sass.logError))
-    .pipe(gulp.dest('./dist/styles'));
+    .pipe(gulp.dest('./dist/styles'))
+    .pipe(livereload());
 });
 
 gulp.task('components', function () {
@@ -68,10 +72,12 @@ gulp.task('components', function () {
         ]
       },
       output: {filename: 'application.js'}
-    })).pipe(gulp.dest('./dist/'));
+    })).pipe(gulp.dest('./dist/'))
+    .pipe(livereload());
 });
 
 gulp.task('watch', function () {
+  livereload.listen();
   gulp.watch(paths.jade, ['jade']);
   gulp.watch(paths.sass, ['sass']);
   gulp.watch(paths.js, ['components']);

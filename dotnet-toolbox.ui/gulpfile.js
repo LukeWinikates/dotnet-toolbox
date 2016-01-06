@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var connect = require('gulp-connect');
+var proxy = require('proxy-middleware');
 var jasmineBrowser = require('gulp-jasmine-browser');
 var webpack = require('webpack-stream');
 var plumber = require('gulp-plumber');
@@ -8,9 +9,11 @@ var sass = require('gulp-sass');
 var rename = require('gulp-rename');
 var replace = require('gulp-replace');
 var path = require("path");
+var url = require('url');
 
 require('babel-loader');
 var JasminePlugin = require('gulp-jasmine-browser/webpack/jasmine-plugin');
+var apiProxyMiddleWare = function() { return [proxy({route: '/api', host: 'localhost', port: '5000', pathname: '/api'})] };
 
 var paths = {
   jade: 'src/html/**/*.jade',
@@ -27,8 +30,13 @@ gulp.task('fonts', function () {
     .pipe(gulp.dest('dist/styles/fonts'));
 });
 
+
 gulp.task('webserver', ['build', 'watch'], function () {
-  connect.server({root: 'dist'});
+  var proxyUrl = url.parse('http:/localhost:5000');
+  proxyUrl.route = '/api';
+  connect.server({root: 'dist',
+    middleware: apiProxyMiddleWare
+  });
 });
 
 gulp.task('jade', function () {

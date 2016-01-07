@@ -1,6 +1,15 @@
 var React = require('react');
 
 var PackageAdder = React.createClass({
+  handleChange(event) {
+    this.setState({packageName: event.target.value});
+  },
+  getInitialState() {
+    return {}
+  },
+  hasPackageName() {
+    return !!this.state.packageName;
+  },
   render() {
     return (
       <div className="container up-xxxl panel paxxxl bg-neutral-11 panel-shadow">
@@ -10,12 +19,14 @@ var PackageAdder = React.createClass({
           </div>
           <div className="form-group">
             <label className="sr-only" htmlFor="package-name">Package Name</label>
-            <input className="form-control" id="package-name" placeholder="Nuget Package Name" type="text"/>
+            <input className="form-control" id="package-name" placeholder="Nuget Package Name" type="text"
+                   onChange={this.handleChange}
+                   value={this.state.packageName}/>
           </div>
-          <button className="btn btn-default" type="submit">add +</button>
+          <button className="btn btn-default" disabled={!this.hasPackageName()} type="submit">add +</button>
         </form>
       </div>
-  );
+    );
   }
 });
 

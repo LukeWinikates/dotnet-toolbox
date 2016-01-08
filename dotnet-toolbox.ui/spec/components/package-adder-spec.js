@@ -13,4 +13,14 @@ describe('PackageAdder', () => {
       expect("#root button.btn").not.toBeDisabled();
     });
   });
+
+  describe('submitting the form', () => {
+    it('posts to the api backend', () => {
+      $('#package-name').val('fizzbuzz-enterprise').simulate('change');
+      $('#root form').simulate('submit');
+      var request = jasmine.Ajax.requests.mostRecent();
+      expect(request.url).toBe('/api/packages');
+      expect(request.data()).toEqual({name: 'fizzbuzz-enterprise'});
+    });
+  });
 });

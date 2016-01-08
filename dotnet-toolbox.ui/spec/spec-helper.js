@@ -1,4 +1,5 @@
 require('jasmine_dom_matchers');
+require('jasmine-ajax');
 
 global.ReactTestUtils = require('react/lib/ReactTestUtils');
 global.React = require('react');
@@ -20,9 +21,11 @@ $.fn.simulate = function(eventName, ...args) {
 };
 
 beforeEach(function () {
+  jasmine.Ajax.install();
   $('body').find('#root').remove().end().append('<main id="root"/>');
 });
 
 afterEach(function () {
+  jasmine.Ajax.uninstall();
   $('body').find('#root').remove().end().append('<main id="root"/>');
 });

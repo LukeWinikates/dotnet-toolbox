@@ -25,6 +25,7 @@
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
     "gulp-sass": "^2.1.1",
+    "jasmine-ajax": "^3.2.0",
     "jasmine_dom_matchers": "dotnet-toolbox/jasmine_dom_matchers#disabled-matcher",
     "proxy-middleware": "^0.15.0",
     "webpack": "^1.12.9",

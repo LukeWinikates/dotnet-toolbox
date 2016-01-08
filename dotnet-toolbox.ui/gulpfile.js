@@ -97,7 +97,7 @@ gulp.task('prepush', ['build'], function () {
 function sharedJasmineSetup(opts) {
   opts = opts || {};
   var plugin = new JasminePlugin();
-  return gulp.src([paths.js.es5Shim, paths.js.components, paths.js.spec])
+  return gulp.src([paths.js.es5Shim, paths.js.spec])
     .pipe(plumber())
     .pipe(webpack({
       watch: !!opts.watch,

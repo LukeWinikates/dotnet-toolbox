@@ -15,12 +15,30 @@ describe('PackageAdder', () => {
   });
 
   describe('submitting the form', () => {
-    it('posts to the api backend', () => {
+    var request;
+    beforeEach(()=>{
       $('#package-name').val('fizzbuzz-enterprise').simulate('change');
       $('#root form').simulate('submit');
-      var request = jasmine.Ajax.requests.mostRecent();
+      request = jasmine.Ajax.requests.mostRecent();
+    });
+
+    it('posts to the api backend', () => {
       expect(request.url).toBe('/api/packages');
       expect(request.data()).toEqual({name: 'fizzbuzz-enterprise'});
+    });
+
+    describe('when the request fails', () => {
+      it('remembers that there was an error', () => {
+        request.respondWith({status: 404});
+        expect($("#root .alert-danger")).toExist();
+      });
+    });
+
+    describe('when the request succeeds', () => {
+      it('remembers that the request succeeded', () => {
+        request.respondWith({status: 204});
+        expect($("#root .alert-success")).toExist();
+      });
     });
   });
 });

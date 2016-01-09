@@ -1,5 +1,6 @@
 var React = require('react');
 var $ = require('jquery');
+import { SuccessAlert, ErrorAlert } from 'pui-react-alerts';
 
 var PackageAdder = React.createClass({
   handleChange(event) {
@@ -18,6 +19,10 @@ var PackageAdder = React.createClass({
       url: '/api/packages',
       data: JSON.stringify({name: this.state.packageName}),
       contentType: 'application/json'
+    }).then(() => {
+      this.setState({success: true });
+    }, () =>{
+      this.setState({error: true});
     });
   },
   render() {
@@ -35,6 +40,20 @@ var PackageAdder = React.createClass({
           </div>
           <button className="btn btn-default" disabled={!this.hasPackageName()} type="submit">add +</button>
         </form>
+        {
+          (() => {
+            if(this.state.success) {
+              return (<SuccessAlert dismissable>Package <a href="#">{this.state.packageName}</a> Created.</SuccessAlert>);
+            }
+          })()
+        }
+        {
+          (() => {
+            if(this.state.error) {
+              return (<ErrorAlert dismissable>Unable to create package "{this.state.packageName}". This might be because the package does not exist at Nuget.org, or Nuget.org may be experiencing an outage.</ErrorAlert>);
+            }
+          })()
+        }
       </div>
     );
   }

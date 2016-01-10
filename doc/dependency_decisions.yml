@@ -65,3 +65,23 @@
     :why: 
     :versions: []
     :when: 2016-01-06 21:25:15.361138000 Z
+- - :license
+  - warning
+  - SimplifiedBSD
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2016-01-10 00:18:30.366927000 Z
+- - :license
+  - babel-runtime
+  - MIT
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2016-01-10 00:19:11.230660000 Z
+- - :approve
+  - font-awesome
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2016-01-10 00:19:32.201647000 Z

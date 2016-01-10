@@ -1,4 +1,5 @@
-@import '../../bower_components/pivotal-ui/src/pivotal-ui/components/colors/colors.scss';
-@import '../../bower_components/pivotal-ui/src/pivotal-ui/components/typography/typography.scss';
+@import '../../node_modules/pui-css-variables-and-mixins/pui-variables';
 @import '../../node_modules/pui-css-buttons/buttons';
+@import '../../node_modules/pui-css-colors/colors';
+@import '../../node_modules/pui-css-typography/typography';
 @import '../../node_modules/pui-css-alerts/alerts';

@@ -5,8 +5,7 @@ install:
   - curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh | sh && source ~/.dnx/dnvm/dnvm.sh && dnvm upgrade
   - gem install license_finder --version 2.1.0.rc2
   - npm install -g gulp
-  - npm install -g bower
-  - (cd dotnet-toolbox.ui; npm install && bower install)
+  - (cd dotnet-toolbox.ui; npm install)
 script:
   - (cd dotnet-toolbox.ui; pwd; license_finder --decisions-file=../doc/dependency_decisions.yml)
   - dnu restore && dnx -p test/dotnet-toolbox.api.tests test

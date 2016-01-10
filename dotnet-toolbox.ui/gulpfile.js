@@ -19,7 +19,7 @@ var apiProxyMiddleWare = function() { return [proxy({route: '/api', host: 'local
 var paths = {
   jade: 'src/html/**/*.jade',
   sass: 'src/styles/**/*.scss',
-  fonts: 'bower_components/pivotal-ui/src/pivotal-ui/components/typography/fonts/**/*',
+  fonts: 'node_modules/pivotal-ui/src/pivotal-ui/components/typography/fonts/**/*',
   js: {
     components: 'src/js/components/**/*.js',
     all: 'src/js/**/*.js',

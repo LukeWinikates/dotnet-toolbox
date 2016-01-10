@@ -17,7 +17,6 @@
     "tests"
   ],
   "dependencies": {
-    "pivotal-ui": "pivotal-cf/pivotal-ui#~2.0.0",
-    "bootstrap-sass": "~3.3.6"
+    "pivotal-ui": "pivotal-cf/pivotal-ui#~2.0.0"
   }
 }

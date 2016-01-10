@@ -32,6 +32,7 @@
     "webpack-stream": "^3.1.0"
   },
   "dependencies": {
+    "bootstrap-sass": "^3.3.6",
     "jquery": "^2.1.4",
     "pui-css-alerts": "^2.0.0",
     "pui-css-buttons": "^2.0.0",

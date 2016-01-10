@@ -1,0 +1,9 @@
+#!/bin/bash
+set -e
+
+git pull -r
+(cd dotnet-toolbox.ui; license_finder --decisions-file=../doc/dependency_decisions.yml)
+dnu restore
+dnx -p test/dotnet-toolbox.api.tests test
+gulp --gulpfile dotnet-toolbox.ui/gulpfile.js jasmine-phantom
+git push

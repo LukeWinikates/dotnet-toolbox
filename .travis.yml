@@ -11,6 +11,10 @@ script:
   - dnu restore && dnx -p test/dotnet-toolbox.api.tests test
   - gulp --gulpfile dotnet-toolbox.ui/gulpfile.js jasmine-phantom
   - gulp --gulpfile dotnet-toolbox.ui/gulpfile.js prepush
+cache:
+  directories:
+    - dotnet-toolbox.ui/node_modules/
+    - ~/.dnx/packages/
 deploy:
   edge: true
   skip_cleanup: true

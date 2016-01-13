@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "bootstrap-sass": "^3.3.6",
+    "history": "^1.17.0",
     "jquery": "^2.1.4",
     "pui-css-alerts": "^2.0.0",
     "pui-css-buttons": "^2.0.0",
@@ -41,6 +42,7 @@
     "pui-css-variables-and-mixins": "^2.0.0",
     "pui-react-alerts": "^3.0.0-alpha.2",
     "react": "^0.14.5",
-    "react-dom": "^0.14.5"
+    "react-dom": "^0.14.5",
+    "react-router": "^1.0.3"
   }
 }

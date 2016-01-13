@@ -1,6 +1,8 @@
 var React = require('react');
 var $ = require('jquery');
 import { SuccessAlert, ErrorAlert } from 'pui-react-alerts';
+import { Link } from 'react-router'
+
 
 var PackageAdder = React.createClass({
   handleChange(event) {
@@ -27,7 +29,7 @@ var PackageAdder = React.createClass({
   },
   render() {
     return (
-      <div className="container up-xxxl panel paxxxl bg-neutral-11 panel-shadow">
+      <div>
         <form className="form-inline" onSubmit={this.submitPackage}>
           <div className="h3">
             Help others by sharing Nuget packages that have helped you
@@ -43,7 +45,7 @@ var PackageAdder = React.createClass({
         {
           (() => {
             if(this.state.success) {
-              return (<SuccessAlert dismissable>Package <a href="#">{this.state.packageName}</a> Created.</SuccessAlert>);
+              return (<SuccessAlert dismissable>Package <Link to={"/package/" + this.state.packageName}>{this.state.packageName}</Link> Registered.</SuccessAlert>);
             }
           })()
         }

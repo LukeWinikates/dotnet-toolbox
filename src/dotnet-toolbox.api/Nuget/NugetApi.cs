@@ -1,7 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
+using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace dotnet_toolbox.api.Nuget
 {
@@ -9,7 +10,8 @@ namespace dotnet_toolbox.api.Nuget
     {
         public bool GetPackage(string name)
         {
-            if(string.IsNullOrWhiteSpace(name)) {
+            if (string.IsNullOrWhiteSpace(name))
+            {
                 return false;
             }
             HttpClient client = new HttpClient();
@@ -25,5 +27,5 @@ namespace dotnet_toolbox.api.Nuget
     public interface INugetApi
     {
         bool GetPackage(string name);
-    }
+    }    
 }

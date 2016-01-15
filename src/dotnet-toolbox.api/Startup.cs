@@ -6,11 +6,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Autofac.Extensions.DependencyInjection;
 using System;
+using Microsoft.AspNet.StaticFiles;
 
 namespace dotnet_toolbox.api
 {
     public class Startup
     {
+        private const string JavaScriptExtension = ".js";
+
         public Startup(IHostingEnvironment env)
         {
             // Set up configuration sources.
@@ -42,10 +45,25 @@ namespace dotnet_toolbox.api
             app.UseIISPlatformHandler();
 
             app.UseDefaultFiles();
-            app.UseStaticFiles();
+            var provider = new FileExtensionContentTypeProvider();
+
+            ForceUtf8EncodingForJavaScript(provider);
+
+            // Serve static files.
+            app.UseStaticFiles(new StaticFileOptions { ContentTypeProvider = provider });
 
             app.UseMvc();
         }
+
+        private static void ForceUtf8EncodingForJavaScript(FileExtensionContentTypeProvider provider)
+        {
+            if (provider.Mappings.ContainsKey(JavaScriptExtension))
+            {
+                provider.Mappings.Remove(JavaScriptExtension);
+            }
+            provider.Mappings.Add(JavaScriptExtension, "application/javascript; charset=utf-8");
+        }
+
 
         // Entry point for the application.
         public static void Main(string[] args) => Microsoft.AspNet.Hosting.WebApplication.Run<Startup>(args);

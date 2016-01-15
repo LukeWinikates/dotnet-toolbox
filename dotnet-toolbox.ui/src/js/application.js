@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Router, Route, Link, browserHistory } from 'react-router'
 var PackageAdder = require('./components/package-adder');
 var PackagePage = require('./components/package-page');
 

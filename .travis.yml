@@ -8,7 +8,7 @@ install:
   - (cd dotnet-toolbox.ui; npm install)
 script:
   - (cd dotnet-toolbox.ui; pwd; license_finder --decisions-file=../doc/dependency_decisions.yml)
-  - dnu restore && dnx -p test/dotnet-toolbox.api.tests test
+  - dnu restore src test && dnx -p test/dotnet-toolbox.api.tests test
   - gulp --gulpfile dotnet-toolbox.ui/gulpfile.js jasmine-phantom
   - gulp --gulpfile dotnet-toolbox.ui/gulpfile.js prepush
 cache:

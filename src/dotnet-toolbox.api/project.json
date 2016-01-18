@@ -17,7 +17,8 @@
     "Microsoft.Extensions.Logging.Debug": "1.0.0-rc1-final",
     "System.Net.Http": "4.0.1-beta-23516",
     "Autofac": "4.0.0-rc1-177",
-    "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-*"
+    "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-*",
+    "StackExchange.Redis": ""
   },
   "commands": {
     "web": "Microsoft.AspNet.Server.Kestrel",

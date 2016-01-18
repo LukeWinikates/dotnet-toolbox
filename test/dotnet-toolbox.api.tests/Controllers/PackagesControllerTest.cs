@@ -46,7 +46,7 @@ namespace dotnet_toolbox.api.tests.Controllers
         public void Post_WhenPackageExistsOnNugetAndInDatabase_DoesNotAddANewLibraryToTheDatabase()
         {
              mockRedisDatabase.Setup(
-                m => m.StringGet("GameOfLife", CommandFlags.None)).Returns("asdfasdf");
+                m => m.StringGet(It.IsAny<RedisKey>(), CommandFlags.None)).Returns("asdfasdf");
 
             mockNugetApi.Setup(m => m.GetPackage(It.IsAny<string>())).Returns(true);
             controller.Post(new PackagesController.CreatePackageRequest { Name = "GameOfLife" });

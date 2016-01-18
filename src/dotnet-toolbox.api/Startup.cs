@@ -9,6 +9,7 @@ using System;
 using Microsoft.AspNet.StaticFiles;
 using StackExchange.Redis;
 using System.IO;
+using dotnet_toolbox.api.Env;
 
 namespace dotnet_toolbox.api
 {
@@ -33,6 +34,7 @@ namespace dotnet_toolbox.api
         {
             services.AddMvc();
             var builder = new ContainerBuilder();
+            builder.RegisterType<EnvironmentReader>();
             builder.RegisterType<Nuget.NugetApi>().As<Nuget.INugetApi>().InstancePerLifetimeScope();
             builder.Register(BuildConnectionMultiplexer).As<ConnectionMultiplexer>().SingleInstance();
             builder.Register(componentContext => componentContext.Resolve<ConnectionMultiplexer>().GetDatabase(PACKAGES_DB)).As<IDatabase>().InstancePerLifetimeScope();
@@ -43,7 +45,8 @@ namespace dotnet_toolbox.api
 
         private static ConnectionMultiplexer BuildConnectionMultiplexer(IComponentContext context)
         {
-            return ConnectionMultiplexer.Connect("localhost");
+            var environment = context.Resolve<EnvironmentReader>();
+            return ConnectionMultiplexer.Connect(environment.RedisConnectionString);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

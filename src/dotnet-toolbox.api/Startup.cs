@@ -34,7 +34,7 @@ namespace dotnet_toolbox.api
         {
             services.AddMvc();
             var builder = new ContainerBuilder();
-            builder.RegisterType<EnvironmentReader>();
+            builder.Register(_ => EnvironmentReader.FromEnvironment());
             builder.RegisterType<Nuget.NugetApi>().As<Nuget.INugetApi>().InstancePerLifetimeScope();
             builder.Register(BuildConnectionMultiplexer).As<ConnectionMultiplexer>().SingleInstance();
             builder.Register(componentContext => componentContext.Resolve<ConnectionMultiplexer>().GetDatabase(PACKAGES_DB)).As<IDatabase>().InstancePerLifetimeScope();

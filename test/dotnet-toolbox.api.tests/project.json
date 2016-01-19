@@ -18,7 +18,7 @@
     "xunit.runner.dnx": "2.1.0-rc1-build204",
     "Moq": "4.2.1510.2205",
     "System.Net.Http": "4.0.1-beta-23516",
-    "StackExchange.Redis": ""
+    "StackExchange.Redis": "1.1.553-alpha"
   },
   "commands": {
     "test": "xunit.runner.dnx"

@@ -11,10 +11,11 @@ namespace dotnet_toolbox.api.tests.Controllers
         Mock<INugetApi> mockNugetApi = new Mock<INugetApi>();
         PackagesController controller;
         Mock<IDatabase> mockRedisDatabase = new Mock<IDatabase>();
+        Mock<IPackageCrawlerJobQueue> mockJobQueue = new Mock<IPackageCrawlerJobQueue>();
 
         public PackagesControllerTest()
         {
-            controller = new PackagesController(mockNugetApi.Object, mockRedisDatabase.Object);
+            controller = new PackagesController(mockNugetApi.Object, mockRedisDatabase.Object, mockJobQueue.Object);
         }
 
         [Fact]
@@ -45,13 +46,22 @@ namespace dotnet_toolbox.api.tests.Controllers
         [Fact]
         public void Post_WhenPackageExistsOnNugetAndInDatabase_DoesNotAddANewLibraryToTheDatabase()
         {
-             mockRedisDatabase.Setup(
-                m => m.StringGet(It.IsAny<RedisKey>(), CommandFlags.None)).Returns("asdfasdf");
+            mockRedisDatabase.Setup(
+               m => m.StringGet(It.IsAny<RedisKey>(), CommandFlags.None)).Returns("asdfasdf");
 
             mockNugetApi.Setup(m => m.GetPackage(It.IsAny<string>())).Returns(true);
             controller.Post(new PackagesController.CreatePackageRequest { Name = "GameOfLife" });
-             mockRedisDatabase.Verify(
-                m => m.StringSet("GameOfLife", It.IsAny<RedisValue>(), null, When.Always, CommandFlags.None), Times.Never());
+            mockRedisDatabase.Verify(
+               m => m.StringSet("GameOfLife", It.IsAny<RedisValue>(), null, When.Always, CommandFlags.None), Times.Never());
+        }
+
+
+        [Fact]
+        public void Post_WhenPackageExists_QueuesAPackageCrawlingJob()
+        {
+            mockNugetApi.Setup(m => m.GetPackage(It.IsAny<string>())).Returns(true);
+            controller.Post(new PackagesController.CreatePackageRequest { Name = "GameOfLife" });
+            mockJobQueue.Verify(m => m.EnqueueJob("GameOfLife"));
         }
     }
 }

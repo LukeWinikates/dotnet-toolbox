@@ -10,6 +10,7 @@ using Microsoft.AspNet.StaticFiles;
 using StackExchange.Redis;
 using System.IO;
 using dotnet_toolbox.api.Env;
+using dotnet_toolbox.api.Nuget;
 
 namespace dotnet_toolbox.api
 {
@@ -36,13 +37,13 @@ namespace dotnet_toolbox.api
             var builder = new ContainerBuilder();
             builder.Register(_ => EnvironmentReader.FromEnvironment());
             builder.RegisterType<Nuget.NugetApi>().As<Nuget.INugetApi>().InstancePerLifetimeScope();
+            builder.RegisterType<PackageCrawlerJobQueue>().As<IPackageCrawlerJobQueue>();
             builder.Register(BuildConnectionMultiplexer).As<ConnectionMultiplexer>().SingleInstance();
             builder.Register(componentContext => componentContext.Resolve<ConnectionMultiplexer>().GetDatabase(PACKAGES_DB)).As<IDatabase>().InstancePerLifetimeScope();
             builder.Populate(services);
             var container = builder.Build();
             return container.Resolve<IServiceProvider>();
         }
-
         private static ConnectionMultiplexer BuildConnectionMultiplexer(IComponentContext context)
         {
             var environment = context.Resolve<EnvironmentReader>();

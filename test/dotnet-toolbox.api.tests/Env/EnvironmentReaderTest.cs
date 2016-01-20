@@ -34,6 +34,6 @@ namespace dotnet_toolbox.api.tests.Env
         public void RedisConnectionString_WhenVCAPServicesPresent_ReturnsTheProperString()
         {
             Assert.Equal("192.168.1.1:38943,password=passw0rd", new EnvironmentReader(VCAP_SERVICES_WITH_REDIS).RedisConnectionString);
-        }
+        }        
     }
 }

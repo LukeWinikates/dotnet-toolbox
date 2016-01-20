@@ -14,11 +14,13 @@ namespace dotnet_toolbox.api.Controllers
     {
         INugetApi nugetApi;
         IDatabase redisDatabase;
+        IPackageCrawlerJobQueue queue;
 
-        public PackagesController(INugetApi nugetApi, IDatabase redisDatabase)
+        public PackagesController(INugetApi nugetApi, IDatabase redisDatabase, IPackageCrawlerJobQueue queue)
         {
             this.nugetApi = nugetApi;
             this.redisDatabase = redisDatabase;
+            this.queue = queue;
         }
 
         [HttpPost]
@@ -30,6 +32,7 @@ namespace dotnet_toolbox.api.Controllers
                 return new HttpStatusCodeResult(404);
             }
             EnsurePackageEntryExistsInDatabase(package);
+            queue.EnqueueJob(package.Name);
 
             return new HttpStatusCodeResult(200);
         }

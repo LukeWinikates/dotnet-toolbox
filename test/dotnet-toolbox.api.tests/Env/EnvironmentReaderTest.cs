@@ -35,5 +35,10 @@ namespace dotnet_toolbox.api.tests.Env
         {
             Assert.Equal("192.168.1.1:38943,password=passw0rd", new EnvironmentReader(VCAP_SERVICES_WITH_REDIS).RedisConnectionString);
         }
+        
+        [Fact]
+        public void RabbitMQConnectionString_WhenVCAPServicesUndefined_ReturnsLocalhost() {
+            Assert.Equal("amqp://guest:guest@localhost:5672", new EnvironmentReader(null).RabbitMQConnectionString);
+        }
     }
 }

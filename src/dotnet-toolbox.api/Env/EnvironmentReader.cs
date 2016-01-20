@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -28,6 +29,14 @@ namespace dotnet_toolbox.api.Env
             get
             {
                 return HasEnv() ? RedisConnectionStringFromEnv() : "localhost";
+            }
+        }
+
+        public string RabbitMQConnectionString
+        {
+            get
+            {
+                return "amqp://guest:guest@localhost:5672";
             }
         }
 

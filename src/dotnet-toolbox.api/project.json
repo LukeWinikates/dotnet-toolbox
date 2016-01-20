@@ -18,7 +18,8 @@
     "System.Net.Http": "4.0.1-beta-23516",
     "Autofac": "4.0.0-rc1-177",
     "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-*",
-    "StackExchange.Redis": "1.1.553-alpha"
+    "StackExchange.Redis": "1.1.553-alpha",
+    "RabbitMQ.Client.CoreClrUnofficial": "3.5.6.1"
   },
   "commands": {
     "web": "Microsoft.AspNet.Server.Kestrel",

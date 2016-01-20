@@ -10,6 +10,7 @@ using Microsoft.AspNet.StaticFiles;
 using StackExchange.Redis;
 using System.IO;
 using dotnet_toolbox.api.Env;
+using dotnet_toolbox.api.Nuget;
 
 namespace dotnet_toolbox.api
 {
@@ -35,12 +36,38 @@ namespace dotnet_toolbox.api
             services.AddMvc();
             var builder = new ContainerBuilder();
             builder.Register(_ => EnvironmentReader.FromEnvironment());
+            builder.Register(BuildRabbitConnectionFactory).SingleInstance();
+            builder.Register(BuildRabbitConnection).InstancePerLifetimeScope();
+            builder.Register(BuildRabbitModel).InstancePerLifetimeScope();
             builder.RegisterType<Nuget.NugetApi>().As<Nuget.INugetApi>().InstancePerLifetimeScope();
+            builder.RegisterType<PackageCrawlerJobQueue>().As<IPackageCrawlerJobQueue>();
             builder.Register(BuildConnectionMultiplexer).As<ConnectionMultiplexer>().SingleInstance();
             builder.Register(componentContext => componentContext.Resolve<ConnectionMultiplexer>().GetDatabase(PACKAGES_DB)).As<IDatabase>().InstancePerLifetimeScope();
             builder.Populate(services);
             var container = builder.Build();
             return container.Resolve<IServiceProvider>();
+        }
+
+        private RabbitMQ.Client.IModel BuildRabbitModel(IComponentContext context)
+        {
+            return context.Resolve<RabbitMQ.Client.IConnection>()
+                .CreateModel();
+        }
+
+        private static RabbitMQ.Client.IConnection BuildRabbitConnection(IComponentContext context)
+        {
+            return context.Resolve<RabbitMQ.Client.ConnectionFactory>()
+                            .CreateConnection();
+        }
+
+        private RabbitMQ.Client.ConnectionFactory BuildRabbitConnectionFactory(IComponentContext context)
+        {
+            var environment = context.Resolve<EnvironmentReader>();
+            var connectionFactory = new RabbitMQ.Client.ConnectionFactory();
+            connectionFactory.Uri = environment.RabbitMQConnectionString;
+            connectionFactory.SocketFactory = (addressFamily) =>
+                     new System.Net.Sockets.TcpClient(System.Net.Sockets.AddressFamily.InterNetwork);
+            return connectionFactory;
         }
 
         private static ConnectionMultiplexer BuildConnectionMultiplexer(IComponentContext context)

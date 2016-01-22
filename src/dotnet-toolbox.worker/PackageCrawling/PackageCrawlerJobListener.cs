@@ -21,11 +21,12 @@ namespace dotnet_toolbox.worker.PackageCrawler
 
         private void DrainQueue()
         {
-            string val = redisDatabase.ListLeftPop("PackageCrawlerJob");
-            while(val != null) {
-                crawler.CrawlProject(val);
-                Console.WriteLine("Crawling Package: {0}", val);
-                val = redisDatabase.ListLeftPop("PackageCrawlerJob");
+            string nextPackage = redisDatabase.ListLeftPop("PackageCrawlerJob");
+            while(nextPackage != null) {
+                Console.WriteLine("Crawling Package: {0}", nextPackage);
+                crawler.CrawlProject(nextPackage);
+                Console.WriteLine("Package Loaded: {0}", nextPackage);
+                nextPackage = redisDatabase.ListLeftPop("PackageCrawlerJob");
             }
         }
     }

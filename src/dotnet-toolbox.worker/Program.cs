@@ -13,10 +13,13 @@ namespace dotnet_toolbox.worker
     {
         public static void Main(string[] args)
         {
+            Console.WriteLine("Starting Background Worker Process");
             var muxer = ConnectionMultiplexer.Connect("localhost"); // TODO config value
             var db = muxer.GetDatabase(1); // TODO constants
-            var timerProvider = new RealTimerProvider();            
-            new PackageCrawlerJobListener(timerProvider, db, new Crawler());
+            Console.WriteLine("DB Connection Successful");
+            var timerProvider = new RealTimerProvider();
+            Console.WriteLine("Starting crawler");            
+            new PackageCrawlerJobListener(timerProvider, db, new Crawler(db, new NuspecDownload())).Listen();
             Console.Read(); // block forever
         }
     }

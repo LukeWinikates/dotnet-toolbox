@@ -1,6 +1,7 @@
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using dotnet_toolbox.common.Models;
 
 namespace dotnet_toolbox.worker.PackageCrawling
 {
@@ -23,7 +24,7 @@ namespace dotnet_toolbox.worker.PackageCrawling
             return doc.Descendants().FirstOrDefault(el => el.Name.LocalName == elementShortName)?.Value?.ToString();
         }
 
-        public class PackageDetails
+        public class PackageDetails : INuspecPackageInfo
         {
             public string Description { get; set; }
             public string Owners { get; set; }

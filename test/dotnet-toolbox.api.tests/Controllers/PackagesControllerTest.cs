@@ -3,6 +3,8 @@ using dotnet_toolbox.api.Controllers;
 using dotnet_toolbox.api.Nuget;
 using Moq;
 using StackExchange.Redis;
+using Newtonsoft.Json;
+using dotnet_toolbox.common.Models;
 
 namespace dotnet_toolbox.api.tests.Controllers
 {
@@ -62,6 +64,16 @@ namespace dotnet_toolbox.api.tests.Controllers
             mockNugetApi.Setup(m => m.GetPackage(It.IsAny<string>())).Returns(true);
             controller.Post(new PackagesController.CreatePackageRequest { Name = "GameOfLife" });
             mockJobQueue.Verify(m => m.EnqueueJob("GameOfLife"));
+        }
+        
+        [Fact]
+        public void GetByName_ReturnsPackage() {
+            var serializeObject = JsonConvert.SerializeObject(new Package { 
+                Name = "Dracula"
+            });
+            mockRedisDatabase.Setup(m => m.StringGet("Dracula", CommandFlags.None)).Returns(serializeObject);
+            var package = controller.GetByName("Dracula");
+            Assert.Equal("Dracula", package.Name);
         }
     }
 }

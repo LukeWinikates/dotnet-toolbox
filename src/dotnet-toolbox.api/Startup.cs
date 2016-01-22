@@ -10,6 +10,7 @@ using Microsoft.AspNet.StaticFiles;
 using StackExchange.Redis;
 using dotnet_toolbox.common.Env;
 using dotnet_toolbox.api.Nuget;
+using Newtonsoft.Json.Serialization;
 
 namespace dotnet_toolbox.api
 {
@@ -31,7 +32,10 @@ namespace dotnet_toolbox.api
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc().AddJsonOptions(json =>
+            {
+                json.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            });
             var builder = new ContainerBuilder();
             builder.Register(_ => EnvironmentReader.FromEnvironment());
             builder.RegisterType<Nuget.NugetApi>().As<Nuget.INugetApi>().InstancePerLifetimeScope();

@@ -3,6 +3,7 @@ using dotnet_toolbox.api.Nuget;
 using Microsoft.AspNet.Mvc;
 using Newtonsoft.Json;
 using StackExchange.Redis;
+using System;
 
 namespace dotnet_toolbox.api.Controllers
 {
@@ -47,6 +48,13 @@ namespace dotnet_toolbox.api.Controllers
         public class CreatePackageRequest
         {
             public string Name { get; set; }
+        }
+
+        [HttpGet]
+        [Route("{packageName}")]
+        public Package GetByName(string packageName)
+        {
+            return JsonConvert.DeserializeObject<Package>(redisDatabase.StringGet(packageName));
         }
     }
 }

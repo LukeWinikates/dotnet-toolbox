@@ -17,7 +17,7 @@ namespace dotnet_toolbox.worker.tests.PackageCrawling
             var mockDb = new Mock<IDatabase>();
             var packageDetails = new NuspecParser.PackageDetails
             {
-                Title = "AutoMapper",
+                Id = "AutoMapper",
                 Version = "LatestAndGreatest",
                 Description = "Turns objects into different objects",
                 Owners = "Jimmy Bogard I think?"
@@ -32,7 +32,7 @@ namespace dotnet_toolbox.worker.tests.PackageCrawling
         private RedisValue stringWithAttributesLike(NuspecParser.PackageDetails packageDetails)
         {
             return It.Is<RedisValue>(rv =>
-                 JObject.Parse(rv.ToString())["Title"].ToString() == packageDetails.Title &&
+                 JObject.Parse(rv.ToString())["Id"].ToString() == packageDetails.Id &&
                  JObject.Parse(rv.ToString())["Version"].ToString() == packageDetails.Version &&
                  JObject.Parse(rv.ToString())["Description"].ToString() == packageDetails.Description &&
                  JObject.Parse(rv.ToString())["Owners"].ToString() == packageDetails.Owners

@@ -14,20 +14,20 @@ namespace dotnet_toolbox.worker.PackageCrawling
                 Version = ValueForElement(doc, "version"),
                 Owners = ValueForElement(doc, "owners"),
                 Description = ValueForElement(doc, "description"),
-                Title = ValueForElement(doc, "title")
+                Id = ValueForElement(doc, "id")
             };
         }
 
         private static string ValueForElement(XDocument doc, string elementShortName)
         {
-            return doc.Descendants("{http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd}" + elementShortName).First().Value.ToString();
+            return doc.Descendants().FirstOrDefault(el => el.Name.LocalName == elementShortName)?.Value?.ToString();
         }
 
         public class PackageDetails
         {
             public string Description { get; set; }
             public string Owners { get; set; }
-            public string Title { get; set; }
+            public string Id { get; set; }
             public string Version { get; set; }
         }
     }

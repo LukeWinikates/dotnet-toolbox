@@ -1,4 +1,5 @@
 using System;
+using dotnet_toolbox.common;
 using StackExchange.Redis;
 
 namespace dotnet_toolbox.worker.PackageCrawler
@@ -21,12 +22,12 @@ namespace dotnet_toolbox.worker.PackageCrawler
 
         private void DrainQueue()
         {
-            string nextPackage = redisDatabase.ListLeftPop("PackageCrawlerJob");
+            string nextPackage = redisDatabase.ListLeftPop(Constants.Redis.PackageCrawlerJobQueueName);
             while(nextPackage != null) {
                 Console.WriteLine("Crawling Package: {0}", nextPackage);
                 crawler.CrawlProject(nextPackage);
                 Console.WriteLine("Package Loaded: {0}", nextPackage);
-                nextPackage = redisDatabase.ListLeftPop("PackageCrawlerJob");
+                nextPackage = redisDatabase.ListLeftPop(Constants.Redis.PackageCrawlerJobQueueName);
             }
         }
     }

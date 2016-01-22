@@ -16,11 +16,5 @@ namespace dotnet_toolbox.api.tests.Nuget
             Assert.False(nuget.GetPackage("Moqq"));
             Assert.False(nuget.GetPackage(null));
         }
-        
-        [Fact]
-        public void GetStuff_GetsStuff() {
-            var nuget = new NugetApi();
-            Console.WriteLine(nuget.ExplodeTheThing("EntityFramework"));
-        }
     }
 }

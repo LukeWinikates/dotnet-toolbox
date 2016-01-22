@@ -6,6 +6,8 @@ using System.Threading;
 using StackExchange.Redis;
 using dotnet_toolbox.worker.PackageCrawler;
 using dotnet_toolbox.worker.PackageCrawling;
+using dotnet_toolbox.common.Env;
+using dotnet_toolbox.common;
 
 namespace dotnet_toolbox.worker
 {
@@ -14,8 +16,8 @@ namespace dotnet_toolbox.worker
         public static void Main(string[] args)
         {
             Console.WriteLine("Starting Background Worker Process");
-            var muxer = ConnectionMultiplexer.Connect("localhost"); // TODO config value
-            var db = muxer.GetDatabase(1); // TODO constants
+            var muxer = ConnectionMultiplexer.Connect(EnvironmentReader.FromEnvironment().RedisConnectionString);
+            var db = muxer.GetDatabase(Constants.Redis.PACKAGES_DB);
             Console.WriteLine("DB Connection Successful");
             var timerProvider = new RealTimerProvider();
             Console.WriteLine("Starting crawler");            

@@ -1,8 +1,8 @@
 {
     "version": "1.0.0-*",
-    "description": "dotnet_toolbox.worker Console Application",
+    "description": "dotnet_toolbox.common Class Library",
     "authors": [
-        ""
+        "Class Library template"
     ],
     "tags": [
         ""
@@ -10,25 +10,13 @@
     "projectUrl": "",
     "licenseUrl": "",
     "tooling": {
-        "defaultNamespace": "dotnet_toolbox.worker"
+        "defaultNamespace": "dotnet_toolbox.common"
     },
     "dependencies": {
-        "System.Net.Http": "4.0.1-beta-23516",
-        "System.Xml.XDocument": "4.0.11-beta-23516",
-        "StackExchange.Redis": "1.1.553-alpha",
-        "Newtonsoft.Json": "6.0.6",
-        "dotnet-toolbox.common": ""
-    },
-    "commands": {
-        "dotnet_toolbox.worker": "dotnet_toolbox.worker"
+        "Newtonsoft.Json": "6.0.6"
     },
     "frameworks": {
-        "dnx451": {
-            "frameworkAssemblies": {
-                "System.Xml": "",
-                "System.Xml.Linq": ""
-            }
-        },
+        "dnx451": {},
         "dnxcore50": {
             "dependencies": {
                 "Microsoft.CSharp": "4.0.1-beta-23516",

@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace dotnet_toolbox.api.Env
+namespace dotnet_toolbox.common.Env
 {
     public class EnvironmentReader
     {

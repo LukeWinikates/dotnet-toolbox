@@ -1,4 +1,4 @@
-namespace dotnet_toolbox.api.Models
+namespace dotnet_toolbox.common.Models
 {
     public class Package
     {

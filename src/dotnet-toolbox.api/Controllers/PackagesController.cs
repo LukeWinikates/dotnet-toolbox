@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using dotnet_toolbox.api.Models;
+using dotnet_toolbox.common.Models;
 using dotnet_toolbox.api.Nuget;
 using Microsoft.AspNet.Mvc;
 using Newtonsoft.Json;

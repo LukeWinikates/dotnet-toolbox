@@ -1,7 +1,7 @@
 using Xunit;
-using dotnet_toolbox.api.Env;
+using dotnet_toolbox.common.Env;
 
-namespace dotnet_toolbox.api.tests.Env
+namespace dotnet_toolbox.common.tests.Env
 {
     public class EnvironmentReaderTest
     {

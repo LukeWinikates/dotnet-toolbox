@@ -14,7 +14,7 @@ namespace dotnet_toolbox.api.tests.Nuget
             var crawler = new PackageCrawlerJobQueue(mockRedisDatabase.Object);
             crawler.EnqueueJob("Cheese");
             mockRedisDatabase.Verify(
-                m => m.ListRightPush((RedisKey)PackageCrawlerJobQueue.RoutingKey,
+                m => m.ListRightPush((RedisKey)PackageCrawlerJobQueue.QueueName,
                 (RedisValue) "Cheese", 
                 When.Always, 
                 CommandFlags.None));

@@ -1,38 +1,34 @@
 using System;
 using System.Threading;
 using StackExchange.Redis;
-using dotnet_toolbox.worker.PackageCrawler;
-using dotnet_toolbox.worker.PackageCrawling;
-using dotnet_toolbox.common.Env;
-using dotnet_toolbox.common;
+using dotnet_toolbox.api.Env;
 
-namespace dotnet_toolbox.worker
+namespace dotnet_toolbox.api.PackageCrawling
 {
-    public class Program
+    public class PackageCrawlerWorker
     {
         private ConnectionMultiplexer muxer;
         private RealTimerProvider timerProvider;
 
-        public Program(ConnectionMultiplexer muxer, RealTimerProvider timerProvider)
+        public PackageCrawlerWorker(ConnectionMultiplexer muxer, RealTimerProvider timerProvider)
         {
             this.muxer = muxer;
             this.timerProvider = timerProvider;
         }
 
-        public static void Main(string[] args)
+        public static void Start()
         {
-            Console.WriteLine("Starting Background Worker Process");
-            var muxer = ConnectionMultiplexer.Connect(EnvironmentReader.FromEnvironment().RedisConnectionString);          
+            var muxer = ConnectionMultiplexer.Connect(EnvironmentReader.FromEnvironment().RedisConnectionString);
             Console.WriteLine("DB Connection Successful");
             var timerProvider = new RealTimerProvider();
-            new Program(muxer, timerProvider).Run();
+            var worker = new PackageCrawlerWorker(muxer, timerProvider);
+            worker.Run();
         }
-        
+
         public void Run()
         {
             Console.WriteLine("Starting crawler");
             new PackageCrawlerJobListener(timerProvider, CreatePackagesDbConnection(), new Crawler(CreatePackagesDbConnection(), new NuspecDownload())).Listen();
-            Console.Read(); // block forever            
         }
 
         private IDatabase CreatePackagesDbConnection()
@@ -43,13 +39,15 @@ namespace dotnet_toolbox.worker
 
     public class RealTimerProvider : ITimerProvider
     {
-        public void StartWithCallback(Action action)
+        public Timer StartWithCallback(Action action)
         {
-            var timer = new Timer(_ => {
+            var timer = new Timer(_ =>
+            {
                 Console.WriteLine("Timer triggered");
                 action();
                 Console.WriteLine("Timer callback completed");
             }, null, 1000, 2000);
+            return timer;
         }
     }
 }

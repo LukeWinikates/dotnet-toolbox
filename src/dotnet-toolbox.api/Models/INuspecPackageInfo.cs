@@ -1,4 +1,4 @@
-namespace dotnet_toolbox.common.Models
+namespace dotnet_toolbox.api.Models
 {
     public interface INuspecPackageInfo
     {

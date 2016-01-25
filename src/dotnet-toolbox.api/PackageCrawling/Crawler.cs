@@ -1,8 +1,7 @@
-using System;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 
-namespace dotnet_toolbox.worker.PackageCrawling
+namespace dotnet_toolbox.api.PackageCrawling
 {
     public class Crawler : ICrawler
     {

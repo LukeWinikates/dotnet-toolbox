@@ -1,8 +1,5 @@
 using Xunit;
 using dotnet_toolbox.api.Nuget;
-using Moq;
-using System.Collections.Generic;
-using System;
 
 namespace dotnet_toolbox.api.tests.Nuget
 {

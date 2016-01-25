@@ -4,7 +4,7 @@ using dotnet_toolbox.api.Nuget;
 using Moq;
 using StackExchange.Redis;
 using Newtonsoft.Json;
-using dotnet_toolbox.common.Models;
+using dotnet_toolbox.api.Models;
 
 namespace dotnet_toolbox.api.tests.Controllers
 {

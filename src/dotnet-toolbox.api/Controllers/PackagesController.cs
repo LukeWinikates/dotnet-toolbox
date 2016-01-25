@@ -1,9 +1,8 @@
-using dotnet_toolbox.common.Models;
+using dotnet_toolbox.api.Models;
 using dotnet_toolbox.api.Nuget;
 using Microsoft.AspNet.Mvc;
 using Newtonsoft.Json;
 using StackExchange.Redis;
-using System;
 
 namespace dotnet_toolbox.api.Controllers
 {

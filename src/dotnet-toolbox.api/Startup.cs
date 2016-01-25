@@ -8,9 +8,11 @@ using Autofac.Extensions.DependencyInjection;
 using System;
 using Microsoft.AspNet.StaticFiles;
 using StackExchange.Redis;
-using dotnet_toolbox.common.Env;
+using dotnet_toolbox.api.Env;
 using dotnet_toolbox.api.Nuget;
 using Newtonsoft.Json.Serialization;
+using dotnet_toolbox.api.PackageCrawling;
+using System.Threading;
 
 namespace dotnet_toolbox.api
 {
@@ -20,6 +22,7 @@ namespace dotnet_toolbox.api
 
         public Startup(IHostingEnvironment env)
         {
+            PackageCrawlerWorker.Start();
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
@@ -41,7 +44,7 @@ namespace dotnet_toolbox.api
             builder.RegisterType<Nuget.NugetApi>().As<Nuget.INugetApi>().InstancePerLifetimeScope();
             builder.RegisterType<PackageCrawlerJobQueue>().As<IPackageCrawlerJobQueue>();
             builder.Register(BuildConnectionMultiplexer).As<ConnectionMultiplexer>().SingleInstance();
-            builder.Register(componentContext => componentContext.Resolve<ConnectionMultiplexer>().GetDatabase(common.Constants.Redis.PACKAGES_DB)).As<IDatabase>().InstancePerLifetimeScope();
+            builder.Register(componentContext => componentContext.Resolve<ConnectionMultiplexer>().GetDatabase(api.Env.Constants.Redis.PACKAGES_DB)).As<IDatabase>().InstancePerLifetimeScope();
             builder.Populate(services);
             var container = builder.Build();
             return container.Resolve<IServiceProvider>();

@@ -1,9 +1,9 @@
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using dotnet_toolbox.common.Models;
+using dotnet_toolbox.api.Models;
 
-namespace dotnet_toolbox.worker.PackageCrawling
+namespace dotnet_toolbox.api.PackageCrawling
 {
     public class NuspecParser
     {

@@ -1,4 +1,4 @@
-namespace dotnet_toolbox.worker.PackageCrawling
+namespace dotnet_toolbox.api.PackageCrawling
 {
     public class NuspecDownload : INuspecDownload
     {

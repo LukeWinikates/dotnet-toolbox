@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 
-namespace dotnet_toolbox.worker.PackageCrawling
+namespace dotnet_toolbox.api.PackageCrawling
 {
     public class NuspecDownloader
     {

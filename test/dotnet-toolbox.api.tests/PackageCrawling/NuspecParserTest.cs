@@ -1,7 +1,7 @@
-using dotnet_toolbox.worker.PackageCrawling;
+using dotnet_toolbox.api.PackageCrawling;
 using Xunit;
 
-namespace dotnet_toolbox.worker.tests.PackageCrawling
+namespace dotnet_toolbox.api.tests.PackageCrawling
 {
     public class NuspecParserTest
     {

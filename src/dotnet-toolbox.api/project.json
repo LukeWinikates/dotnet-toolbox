@@ -19,8 +19,7 @@
         "System.Text.Encoding": "4.0.11-beta-23516",
         "Autofac": "4.0.0-rc1-177",
         "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-*",
-        "StackExchange.Redis": "1.1.553-alpha",
-        "dotnet-toolbox.common" : ""
+        "StackExchange.Redis": "1.1.553-alpha"
     },
     "commands": {
         "web": "Microsoft.AspNet.Server.Kestrel",
@@ -28,7 +27,11 @@
     },
     "frameworks": {
         "dnx451": {},
-        "dnxcore50": {}
+        "dnxcore50": {
+            "dependencies": {
+                "System.Threading.Timer": "4.0.1-beta-23516"
+            }
+        }
     },
     "exclude": [
         "wwwroot",

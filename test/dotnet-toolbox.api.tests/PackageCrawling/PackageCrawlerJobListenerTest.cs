@@ -1,10 +1,11 @@
 using System;
-using dotnet_toolbox.worker.PackageCrawler;
+using System.Threading;
+using dotnet_toolbox.api.PackageCrawling;
 using Moq;
 using StackExchange.Redis;
 using Xunit;
 
-namespace dotnet_toolbox.worker.tests.PackageCrawling
+namespace dotnet_toolbox.api.tests.PackageCrawling
 {
     public class PackageCrawlerJobListenerTest {
         [Fact]
@@ -30,9 +31,10 @@ namespace dotnet_toolbox.worker.tests.PackageCrawling
     {
         private Action action;
 
-        public void StartWithCallback(Action action)
+        public Timer StartWithCallback(Action action)
         {
             this.action = action;
+            return null;
         }
 
         internal void Fire()

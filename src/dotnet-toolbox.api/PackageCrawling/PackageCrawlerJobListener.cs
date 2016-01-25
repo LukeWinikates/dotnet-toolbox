@@ -1,13 +1,14 @@
 using System;
-using dotnet_toolbox.common;
+using dotnet_toolbox.api.Env;
 using StackExchange.Redis;
 
-namespace dotnet_toolbox.worker.PackageCrawler
+namespace dotnet_toolbox.api.PackageCrawling
 {
     public class PackageCrawlerJobListener {
         ICrawler crawler;
         ITimerProvider timerProvider;
         IDatabase redisDatabase;
+        System.Threading.Timer timer;
 
         public PackageCrawlerJobListener(ITimerProvider timerProvider, IDatabase redisDatabase, ICrawler crawler) {
             this.crawler = crawler;
@@ -17,7 +18,7 @@ namespace dotnet_toolbox.worker.PackageCrawler
 
         public void Listen()
         {
-            timerProvider.StartWithCallback(DrainQueue);
+            this.timer = timerProvider.StartWithCallback(DrainQueue);
         }
 
         private void DrainQueue()

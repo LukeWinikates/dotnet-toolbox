@@ -1,4 +1,4 @@
-namespace dotnet_toolbox.common
+namespace dotnet_toolbox.api.Env
 {
     public static class Constants
     {

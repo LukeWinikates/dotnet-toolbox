@@ -1,12 +1,10 @@
-using System;
-using dotnet_toolbox.worker.PackageCrawler;
-using dotnet_toolbox.worker.PackageCrawling;
+using dotnet_toolbox.api.PackageCrawling;
 using Moq;
 using Newtonsoft.Json.Linq;
 using StackExchange.Redis;
 using Xunit;
 
-namespace dotnet_toolbox.worker.tests.PackageCrawling
+namespace dotnet_toolbox.api.tests.PackageCrawling
 {
     public class CrawlerTest
     {

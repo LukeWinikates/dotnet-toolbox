@@ -3,9 +3,7 @@ set -e
 
 git pull -r
 (cd dotnet-toolbox.ui; license_finder --decisions-file=../doc/dependency_decisions.yml)
-dnu restore src test
-dnx -p test/dotnet-toolbox.common.tests test
+dnu restore
 dnx -p test/dotnet-toolbox.api.tests test
-dnx -p test/dotnet-toolbox.worker.tests test
 gulp --gulpfile dotnet-toolbox.ui/gulpfile.js jasmine-phantom
 git push

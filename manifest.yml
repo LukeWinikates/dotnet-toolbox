@@ -5,13 +5,5 @@ applications:
   instances: 1
   host: dotnet-toolbox-staging
   domain: cfapps.pez.pivotal.io
-  path: src/dotnet-toolbox.api/bin/output
-  buildpack: https://github.com/cloudfoundry-community/asp.net5-buildpack.git
-- name: dotnet-toolbox-staging-worker
-  no-route: true
-  memory: 1024M
-  instances: 1
-  host: dotnet-toolbox-staging
-  domain: cfapps.pez.pivotal.io
-  path: src/dotnet-toolbox.worker/bin/output
+  path: src/dotnet-toolbox.api
   buildpack: https://github.com/cloudfoundry-community/asp.net5-buildpack.git

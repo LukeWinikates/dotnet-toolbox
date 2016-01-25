@@ -17,10 +17,22 @@
         "System.Xml.XDocument": "4.0.11-beta-23516",
         "StackExchange.Redis": "1.1.553-alpha",
         "Newtonsoft.Json": "6.0.6",
+        "Microsoft.AspNet.IISPlatformHandler": "1.0.0-rc1-final",
+        "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
+        "Microsoft.AspNet.Server.Kestrel": "1.0.0-rc1-final",
+        "Microsoft.AspNet.StaticFiles": "1.0.0-rc1-final",
+        "Microsoft.Extensions.Configuration.FileProviderExtensions": "1.0.0-rc1-final",
+        "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
+        "Microsoft.Extensions.Logging.Console": "1.0.0-rc1-final",
+        "Microsoft.Extensions.Logging.Debug": "1.0.0-rc1-final",
+        "Autofac": "4.0.0-rc1-177",
+        "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-*",
+        "System.Text.Encoding": "4.0.11-beta-23516",
+        "System.Net.Security": "4.0.0-beta-23516",
         "dotnet-toolbox.common": ""
     },
     "commands": {
-        "dotnet_toolbox.worker": "dotnet_toolbox.worker"
+        "kestrel": "run"
     },
     "frameworks": {
         "dnx451": {

@@ -14,6 +14,8 @@ script:
   - dnx -p test/dotnet-toolbox.worker.tests test
   - gulp --gulpfile dotnet-toolbox.ui/gulpfile.js jasmine-phantom
   - gulp --gulpfile dotnet-toolbox.ui/gulpfile.js prepush
+  - (cd src/dotnet-toolbox.worker && dnu publish --framework dnxcore50)
+  - (cd src/dotnet-toolbox.api && dnu publish --framework dnxcore50)
 cache:
   directories:
     - dotnet-toolbox.ui/node_modules/

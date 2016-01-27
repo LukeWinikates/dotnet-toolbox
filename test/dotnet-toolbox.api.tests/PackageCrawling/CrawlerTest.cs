@@ -1,3 +1,4 @@
+using dotnet_toolbox.api.Env;
 using dotnet_toolbox.api.PackageCrawling;
 using Moq;
 using Newtonsoft.Json.Linq;
@@ -24,7 +25,7 @@ namespace dotnet_toolbox.api.tests.PackageCrawling
                 .Returns(packageDetails);
             var crawler = new Crawler(mockDb.Object, mockNuspecDownloader.Object);
             crawler.CrawlProject("AutoMapper");
-            mockDb.Verify(m => m.StringSet((RedisKey)"AutoMapper", stringWithAttributesLike(packageDetails), null, When.Always, CommandFlags.None));
+            mockDb.Verify(m => m.StringSet(Constants.Redis.PackageKeyForName("AutoMapper"), stringWithAttributesLike(packageDetails), null, When.Always, CommandFlags.None));
         }
 
         private RedisValue stringWithAttributesLike(NuspecParser.PackageDetails packageDetails)

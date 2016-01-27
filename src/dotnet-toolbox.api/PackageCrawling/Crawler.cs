@@ -1,3 +1,4 @@
+using dotnet_toolbox.api.Env;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 
@@ -17,7 +18,7 @@ namespace dotnet_toolbox.api.PackageCrawling
         public void CrawlProject(string name)
         {
             var details = this.download.Download(name);
-            this.redisDatabase.StringSet(name, JsonConvert.SerializeObject(details));
+            this.redisDatabase.StringSet(Constants.Redis.PackageKeyForName(name), JsonConvert.SerializeObject(details));
         }
     }
 }

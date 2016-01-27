@@ -1,3 +1,4 @@
+using dotnet_toolbox.api.Env;
 using dotnet_toolbox.api.Models;
 using dotnet_toolbox.api.Nuget;
 using Microsoft.AspNet.Mvc;
@@ -40,7 +41,7 @@ namespace dotnet_toolbox.api.Controllers
             if (packageValue == null)
             {
                 var packageJson = JsonConvert.SerializeObject(new Package { Name = package.Name });
-                this.redisDatabase.StringSet(package.Name, packageJson);
+                this.redisDatabase.StringSet(Constants.Redis.PackageKeyForName(package.Name), packageJson);
             }
         }
 
@@ -53,7 +54,7 @@ namespace dotnet_toolbox.api.Controllers
         [Route("{packageName}")]
         public Package GetByName(string packageName)
         {
-            return JsonConvert.DeserializeObject<Package>(redisDatabase.StringGet(packageName));
+            return JsonConvert.DeserializeObject<Package>(redisDatabase.StringGet(Constants.Redis.PackageKeyForName(packageName)));
         }
     }
 }

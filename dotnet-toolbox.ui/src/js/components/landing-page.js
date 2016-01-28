@@ -1,9 +1,26 @@
 var React = require('react');
-import { Link } from 'react-router'
+var { Link } = require('react-router');
 var $ = require('jquery');
 var PackageAdder = require('./package-adder');
 var Divider = require('pui-react-dividers').Divider;
 var LeaderPanel = require('./layout').LeaderPanel;
+var {Row, Col} = require('pui-react-grids');
+var Panel = require('pui-react-panels').Panel;
+
+var PackageTile = React.createClass({
+  render() {
+    return (
+      <Col md={4}>
+        <Link to={"/package/" + this.props.package.id}>
+          <Panel className="bg-accent-6 type-dark-1">
+            <h4 className="package">{this.props.package.id}</h4>
+            <p><strong>current version: </strong> {this.props.package.version }</p>
+          </Panel>
+        </Link>
+      </Col>
+    )
+  }
+});
 
 var Category = React.createClass({
   render() {
@@ -12,6 +29,13 @@ var Category = React.createClass({
         <Divider/>
         <article className="container category">
           <h3>{this.props.category.title}</h3>
+          <Row>
+            {
+              this.props.category.packages.map(p => {
+                return (<PackageTile key={p.id} package={p}/>)
+              })
+            }
+          </Row>
         </article>
       </section>
     )

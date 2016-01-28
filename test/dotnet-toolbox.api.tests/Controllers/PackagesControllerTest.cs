@@ -3,8 +3,8 @@ using dotnet_toolbox.api.Controllers;
 using dotnet_toolbox.api.Nuget;
 using Moq;
 using StackExchange.Redis;
-using Newtonsoft.Json;
 using dotnet_toolbox.api.Models;
+using dotnet_toolbox.api.Query;
 using dotnet_toolbox.api.Env;
 
 namespace dotnet_toolbox.api.tests.Controllers
@@ -15,10 +15,11 @@ namespace dotnet_toolbox.api.tests.Controllers
         PackagesController controller;
         Mock<IDatabase> mockRedisDatabase = new Mock<IDatabase>();
         Mock<IPackageCrawlerJobQueue> mockJobQueue = new Mock<IPackageCrawlerJobQueue>();
+        Mock<IGetQuerier<Package>> mockRedisQuery = new Mock<IGetQuerier<Package>>();
 
         public PackagesControllerTest()
         {
-            controller = new PackagesController(mockNugetApi.Object, mockRedisDatabase.Object, mockJobQueue.Object);
+            controller = new PackagesController(mockNugetApi.Object, mockRedisDatabase.Object, mockJobQueue.Object, mockRedisQuery.Object);
         }
 
         [Fact]
@@ -69,10 +70,7 @@ namespace dotnet_toolbox.api.tests.Controllers
         
         [Fact]
         public void GetByName_ReturnsPackage() {
-            var serializeObject = JsonConvert.SerializeObject(new Package { 
-                Name = "Dracula"
-            });
-            mockRedisDatabase.Setup(m => m.StringGet(Constants.Redis.PackageKeyForName("Dracula"), CommandFlags.None)).Returns(serializeObject);
+            mockRedisQuery.Setup(m => m.Get("Dracula")).Returns(new Package { Name = "Dracula" });
             var package = controller.GetByName("Dracula");
             Assert.Equal("Dracula", package.Name);
         }

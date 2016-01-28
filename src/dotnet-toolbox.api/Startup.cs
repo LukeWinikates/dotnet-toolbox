@@ -12,7 +12,8 @@ using dotnet_toolbox.api.Env;
 using dotnet_toolbox.api.Nuget;
 using Newtonsoft.Json.Serialization;
 using dotnet_toolbox.api.PackageCrawling;
-using System.Threading;
+using dotnet_toolbox.api.Query;
+using dotnet_toolbox.api.Models;
 
 namespace dotnet_toolbox.api
 {
@@ -43,6 +44,7 @@ namespace dotnet_toolbox.api
             builder.Register(_ => EnvironmentReader.FromEnvironment());
             builder.RegisterType<Nuget.NugetApi>().As<Nuget.INugetApi>().InstancePerLifetimeScope();
             builder.RegisterType<PackageCrawlerJobQueue>().As<IPackageCrawlerJobQueue>();
+            builder.Register(cc => new RedisGetQuery<Package>(cc.Resolve<IDatabase>(), api.Env.Constants.Redis.PackageKeyForName)).As<IGetQuerier<Package>>();
             builder.Register(BuildConnectionMultiplexer).As<ConnectionMultiplexer>().SingleInstance();
             builder.Register(componentContext => componentContext.Resolve<ConnectionMultiplexer>().GetDatabase(api.Env.Constants.Redis.PACKAGES_DB)).As<IDatabase>().InstancePerLifetimeScope();
             builder.Populate(services);

@@ -1,6 +1,7 @@
 using dotnet_toolbox.api.Env;
 using dotnet_toolbox.api.Models;
 using dotnet_toolbox.api.Nuget;
+using dotnet_toolbox.api.Query;
 using Microsoft.AspNet.Mvc;
 using Newtonsoft.Json;
 using StackExchange.Redis;
@@ -13,12 +14,14 @@ namespace dotnet_toolbox.api.Controllers
         INugetApi nugetApi;
         IDatabase redisDatabase;
         IPackageCrawlerJobQueue queue;
+        private IGetQuerier<Package> redisQuerier;
 
-        public PackagesController(INugetApi nugetApi, IDatabase redisDatabase, IPackageCrawlerJobQueue queue)
+        public PackagesController(INugetApi nugetApi, IDatabase redisDatabase, IPackageCrawlerJobQueue queue, IGetQuerier<Package> redisQuery)
         {
             this.nugetApi = nugetApi;
             this.redisDatabase = redisDatabase;
             this.queue = queue;
+            this.redisQuerier = redisQuery;
         }
 
         [HttpPost]
@@ -54,7 +57,7 @@ namespace dotnet_toolbox.api.Controllers
         [Route("{packageName}")]
         public Package GetByName(string packageName)
         {
-            return JsonConvert.DeserializeObject<Package>(redisDatabase.StringGet(Constants.Redis.PackageKeyForName(packageName)));
+            return redisQuerier.Get(packageName);
         }
     }
 }

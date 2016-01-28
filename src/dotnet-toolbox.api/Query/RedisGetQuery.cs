@@ -4,7 +4,7 @@ using StackExchange.Redis;
 
 namespace dotnet_toolbox.api.Query
 {
-    public class RedisGetQuery<T> : IGetQuerier<T>
+    public class RedisGetQuery<T> : IGetQuerier<T> where T : class
     {
         private IDatabase redisDatabase;
         private Func<string, RedisKey> keyBuilder;
@@ -17,7 +17,11 @@ namespace dotnet_toolbox.api.Query
 
         public T Get(string key)
         {
-            return JsonConvert.DeserializeObject<T>(redisDatabase.StringGet(keyBuilder(key)));
+            var objectJson = redisDatabase.StringGet(keyBuilder(key));
+            if(objectJson.IsNull) {
+                return null;
+            }
+            return JsonConvert.DeserializeObject<T>(objectJson);
         }
     }
 }

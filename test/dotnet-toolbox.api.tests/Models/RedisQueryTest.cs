@@ -10,15 +10,23 @@ namespace dotnet_toolbox.api.tests.Models
 {
     public class RedisQueryTest
     {
+        Mock<IDatabase> mockRedisDatabase = new Mock<IDatabase>();
+
         [Fact]
         public void Get_WhenTypeIsPackage_FindsThePackageInRedisDb()
         {
-            var mockRedisDatabase = new Mock<IDatabase>();
             mockRedisDatabase.Setup(m => m.StringGet(("packages.GameOfLife"), CommandFlags.None))
-                .Returns(JsonConvert.SerializeObject(new Package{ Name = "GameOfLife"}));
+                .Returns(JsonConvert.SerializeObject(new Package { Name = "GameOfLife" }));
             var subject = new RedisGetQuery<Package>(mockRedisDatabase.Object, Constants.Redis.PackageKeyForName);
             var package = subject.Get("GameOfLife");
             Assert.Equal(package.Name, "GameOfLife");
+        }
+
+        [Fact]
+        public void Get_WhenRedisValueIsNull_ReturnsNull()
+        {
+            var subject = new RedisGetQuery<Package>(mockRedisDatabase.Object, Constants.Redis.PackageKeyForName);
+            Assert.Null(subject.Get("Null!"));
         }
     }
 }

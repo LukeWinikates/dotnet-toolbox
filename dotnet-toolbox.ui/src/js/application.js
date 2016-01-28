@@ -1,6 +1,6 @@
 import React from 'react';
 
-var PackageAdder = require('./components/package-adder');
+var LandingPage = require('./components/landing-page');
 var PackagePage = require('./components/package-page');
 
 const App = React.createClass({
@@ -16,7 +16,7 @@ const App = React.createClass({
 const routes = {
   path: '/',
   component: App,
-  indexRoute: { component: PackageAdder },
+  indexRoute: { component: LandingPage },
   childRoutes: [
     { path: 'package/:packageName', component: PackagePage }
   ]

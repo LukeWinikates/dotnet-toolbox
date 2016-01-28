@@ -1,6 +1,7 @@
 var React = require('react');
 import { Link } from 'react-router'
 var $ = require('jquery');
+var LeaderPanel = require('./layout').LeaderPanel;
 
 var Details = React.createClass({
   render() {
@@ -37,7 +38,7 @@ var PackagePage =
     },
     render() {
       return (
-        <div>
+        <LeaderPanel>
           <div className="h3">{this.props.params.packageName}</div>
           {
             (() => {
@@ -47,7 +48,7 @@ var PackagePage =
             })()
           }
           <li><Link to="/">&lt;- Back</Link></li>
-        </div>
+        </LeaderPanel>
       )
     }
   });

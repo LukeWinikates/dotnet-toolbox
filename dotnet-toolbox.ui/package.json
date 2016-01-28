@@ -39,9 +39,11 @@
     "pui-css-alerts": "^2.0.0",
     "pui-css-buttons": "^2.0.0",
     "pui-css-colors": "^2.0.0",
+    "pui-css-dividers": "^2.0.0",
     "pui-css-typography": "^2.0.0",
     "pui-css-variables-and-mixins": "^2.0.0",
     "pui-react-alerts": "^3.0.0-alpha.2",
+    "pui-react-dividers": "^3.0.0-alpha.3",
     "react": "^0.14.5",
     "react-dom": "^0.14.5",
     "react-router": "^1.0.3"

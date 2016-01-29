@@ -15,6 +15,7 @@ var PackageTile = React.createClass({
           <Panel className="bg-accent-6 type-dark-1">
             <h4 className="package">{this.props.package.id}</h4>
             <p><strong>current version: </strong> {this.props.package.version }</p>
+            <em>{this.props.package.description }</em>
           </Panel>
         </Link>
       </Col>

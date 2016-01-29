@@ -71,6 +71,9 @@ Unfortunately, the `StackExchange.Redis` client used for persistence has a *Mono
 
 These are community growing pains on the way to standardizing around a cross-platform .NET implementation and will likely be fixed in the months to come, rendering this section obsolete!
 
+## So the data's all in Redis. That's an interesting choice.
+The datastore for this app is Redis. This wasn't actually an intentional decision. The original plan was to use a relational database, but the only relational database available on PCF at the moment is MySQL, and the prerelease, CoreCLR-compatible version of Microsoft's EntityFramework (EF) ORM does not yet support MySQL. Earlier versions of EF do support MySQL, but don't work nicely with `dnx` or CoreCLR, so the easist way forward was trying something else entirely. After dabbling with other options for a while, Redis seemed like an option worth trying, especially in the spirit of experimentation.
+
 ## Deploying to Cloud Foundry
 The staging instance is here:
 

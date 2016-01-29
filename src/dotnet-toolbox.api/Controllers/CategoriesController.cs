@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using dotnet_toolbox.api.Models;
@@ -10,9 +9,9 @@ namespace dotnet_toolbox.api.Controllers
     [Route("api/[controller]")]
     public class CategoriesController : Controller
     {
-        private IGetQuerier<Package> querier;
+        private IGetSetQuerier<Package> querier;
 
-        public CategoriesController(IGetQuerier<Package> querier)
+        public CategoriesController(IGetSetQuerier<Package> querier)
         {
             this.querier = querier;
         }

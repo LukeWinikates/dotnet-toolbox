@@ -1,10 +1,7 @@
-using dotnet_toolbox.api.Env;
+using Microsoft.AspNet.Mvc;
 using dotnet_toolbox.api.Models;
 using dotnet_toolbox.api.Nuget;
 using dotnet_toolbox.api.Query;
-using Microsoft.AspNet.Mvc;
-using Newtonsoft.Json;
-using StackExchange.Redis;
 
 namespace dotnet_toolbox.api.Controllers
 {
@@ -12,14 +9,12 @@ namespace dotnet_toolbox.api.Controllers
     public class PackagesController : Controller
     {
         INugetApi nugetApi;
-        IDatabase redisDatabase;
         IPackageCrawlerJobQueue queue;
-        private IGetQuerier<Package> redisQuerier;
+        private IGetSetQuerier<Package> redisQuerier;
 
-        public PackagesController(INugetApi nugetApi, IDatabase redisDatabase, IPackageCrawlerJobQueue queue, IGetQuerier<Package> redisQuery)
+        public PackagesController(INugetApi nugetApi, IPackageCrawlerJobQueue queue, IGetSetQuerier<Package> redisQuery)
         {
             this.nugetApi = nugetApi;
-            this.redisDatabase = redisDatabase;
             this.queue = queue;
             this.redisQuerier = redisQuery;
         }
@@ -40,11 +35,10 @@ namespace dotnet_toolbox.api.Controllers
 
         private void EnsurePackageEntryExistsInDatabase(CreatePackageRequest package)
         {
-            string packageValue = this.redisDatabase.StringGet(package.Name);
-            if (packageValue == null)
+            var existingPackage = this.redisQuerier.Get(package.Name);
+            if (existingPackage == null)
             {
-                var packageJson = JsonConvert.SerializeObject(new Package { Name = package.Name });
-                this.redisDatabase.StringSet(Constants.Redis.PackageKeyForName(package.Name), packageJson);
+                redisQuerier.Set(package.Name, new Package { Name = package.Name });
             }
         }
 

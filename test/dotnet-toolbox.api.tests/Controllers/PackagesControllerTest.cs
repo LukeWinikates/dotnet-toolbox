@@ -2,10 +2,8 @@ using Xunit;
 using dotnet_toolbox.api.Controllers;
 using dotnet_toolbox.api.Nuget;
 using Moq;
-using StackExchange.Redis;
 using dotnet_toolbox.api.Models;
 using dotnet_toolbox.api.Query;
-using dotnet_toolbox.api.Env;
 
 namespace dotnet_toolbox.api.tests.Controllers
 {
@@ -13,13 +11,12 @@ namespace dotnet_toolbox.api.tests.Controllers
     {
         Mock<INugetApi> mockNugetApi = new Mock<INugetApi>();
         PackagesController controller;
-        Mock<IDatabase> mockRedisDatabase = new Mock<IDatabase>();
         Mock<IPackageCrawlerJobQueue> mockJobQueue = new Mock<IPackageCrawlerJobQueue>();
-        Mock<IGetQuerier<Package>> mockRedisQuery = new Mock<IGetQuerier<Package>>();
+        Mock<IGetSetQuerier<Package>> mockRedisQuery = new Mock<IGetSetQuerier<Package>>();
 
         public PackagesControllerTest()
         {
-            controller = new PackagesController(mockNugetApi.Object, mockRedisDatabase.Object, mockJobQueue.Object, mockRedisQuery.Object);
+            controller = new PackagesController(mockNugetApi.Object, mockJobQueue.Object, mockRedisQuery.Object);
         }
 
         [Fact]
@@ -34,7 +31,7 @@ namespace dotnet_toolbox.api.tests.Controllers
         {
             mockNugetApi.Setup(m => m.GetPackage(It.IsAny<string>())).Returns(true);
             controller.Post(new PackagesController.CreatePackageRequest { Name = "GameOfLife" });
-            mockRedisDatabase.Verify(m => m.StringSet(Constants.Redis.PackageKeyForName("GameOfLife"), It.IsAny<RedisValue>(), null, When.Always, CommandFlags.None));
+            mockRedisQuery.Verify(m => m.Set("GameOfLife", It.Is<Package>(p => p.Name == "GameOfLife")));
         }
 
         [Fact]
@@ -42,21 +39,17 @@ namespace dotnet_toolbox.api.tests.Controllers
         {
             mockNugetApi.Setup(m => m.GetPackage(It.IsAny<string>())).Returns(false);
             controller.Post(new PackagesController.CreatePackageRequest { Name = "GameOfLife" });
-            mockRedisDatabase.Verify(
-                m => m.StringSet(Constants.Redis.PackageKeyForName("GameOfLife"), It.IsAny<RedisValue>(), null, When.Always, CommandFlags.None), Times.Never());
+            mockRedisQuery.Verify(m => m.Set(It.IsAny<string>(), It.IsAny<Package>()), Times.Never());
 
         }
 
         [Fact]
         public void Post_WhenPackageExistsOnNugetAndInDatabase_DoesNotAddANewLibraryToTheDatabase()
         {
-            mockRedisDatabase.Setup(
-               m => m.StringGet(It.IsAny<RedisKey>(), CommandFlags.None)).Returns("asdfasdf");
-
+            mockRedisQuery.Setup(m => m.Get("GameOfLife")).Returns(new Package { Name = "GameOfLife" });
             mockNugetApi.Setup(m => m.GetPackage(It.IsAny<string>())).Returns(true);
             controller.Post(new PackagesController.CreatePackageRequest { Name = "GameOfLife" });
-            mockRedisDatabase.Verify(
-               m => m.StringSet(Constants.Redis.PackageKeyForName("GameOfLife"), It.IsAny<RedisValue>(), null, When.Always, CommandFlags.None), Times.Never());
+            mockRedisQuery.Verify(m => m.Set(It.IsAny<string>(), It.IsAny<Package>()), Times.Never());
         }
 
 

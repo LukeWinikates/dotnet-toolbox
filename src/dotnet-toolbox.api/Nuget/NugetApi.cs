@@ -1,8 +1,5 @@
 using System;
 using System.Net.Http;
-using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace dotnet_toolbox.api.Nuget
 {

@@ -13,7 +13,7 @@ namespace dotnet_toolbox.api.tests.Controllers
         [Fact]
         public void GetAll_ShouldReturnTheTop3Categories()
         {
-            var mockGetQuerier = new Mock<IGetQuerier<Package>>();
+            var mockGetQuerier = new Mock<IGetSetQuerier<Package>>();
             mockGetQuerier.Setup(m => m.Get(It.IsAny<string>())).Returns((Func<string,Package>)PackageFromName);
 
             var categories = new CategoriesController(mockGetQuerier.Object).GetAll();

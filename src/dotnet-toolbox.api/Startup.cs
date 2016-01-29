@@ -23,6 +23,7 @@ namespace dotnet_toolbox.api
 
         public Startup(IHostingEnvironment env)
         {
+            LoggingConfiguration.StartConsoleLogging();
             PackageCrawlerWorker.Start();
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()

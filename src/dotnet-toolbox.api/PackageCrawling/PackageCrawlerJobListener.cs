@@ -1,11 +1,13 @@
 using System;
 using dotnet_toolbox.api.Env;
+using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 
 namespace dotnet_toolbox.api.PackageCrawling
 {
     public class PackageCrawlerJobListener
     {
+        ILogger logger = LoggingConfiguration.CreateLogger<PackageCrawlerJobListener>();
         ICrawler crawler;
         ITimerProvider timerProvider;
         IDatabase redisDatabase;
@@ -30,14 +32,14 @@ namespace dotnet_toolbox.api.PackageCrawling
             {
                 try
                 {
-                    Console.WriteLine("Crawling Package: {0}", nextPackage);
+                    logger.LogInformation("Crawling Package: {0}", nextPackage);
                     crawler.CrawlProject(nextPackage);
                     redisDatabase.ListRemove(Constants.Redis.StartedPackageCrawlerJobQueueName, nextPackage);
-                    Console.WriteLine("Package Loaded: {0}", nextPackage);
+                    logger.LogInformation("Package Loaded: {0}", nextPackage);
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("Crawling Failed for package: {0} due to error: {1}", nextPackage, e);
+                    logger.LogError("Crawling Failed for package: {0} due to error: {1}", nextPackage, e);
                 }
                 nextPackage = redisDatabase.ListRightPopLeftPush(Constants.Redis.PackageCrawlerJobQueueName, Constants.Redis.StartedPackageCrawlerJobQueueName);
             }

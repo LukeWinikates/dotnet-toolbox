@@ -1,9 +1,8 @@
-using dotnet_toolbox.api.Env;
-using dotnet_toolbox.api.PackageCrawling;
 using Moq;
-using Newtonsoft.Json.Linq;
-using StackExchange.Redis;
 using Xunit;
+using dotnet_toolbox.api.Models;
+using dotnet_toolbox.api.PackageCrawling;
+using dotnet_toolbox.api.Query;
 
 namespace dotnet_toolbox.api.tests.PackageCrawling
 {
@@ -13,7 +12,8 @@ namespace dotnet_toolbox.api.tests.PackageCrawling
         public void CrawlProject_GetsNuspecFromNugetAndStoresContents()
         {
             var mockNuspecDownloader = new Mock<INuspecDownload>();
-            var mockDb = new Mock<IDatabase>();
+            var mockQuerier = new Mock<IGetSetQuerier<INuspecPackageInfo>>();
+
             var packageDetails = new NuspecParser.PackageDetails
             {
                 Id = "AutoMapper",
@@ -23,18 +23,18 @@ namespace dotnet_toolbox.api.tests.PackageCrawling
             };
             mockNuspecDownloader.Setup(m => m.Download("AutoMapper"))
                 .Returns(packageDetails);
-            var crawler = new Crawler(mockDb.Object, mockNuspecDownloader.Object);
+            var crawler = new Crawler(mockQuerier.Object, mockNuspecDownloader.Object);
             crawler.CrawlProject("AutoMapper");
-            mockDb.Verify(m => m.StringSet(Constants.Redis.PackageKeyForName("AutoMapper"), stringWithAttributesLike(packageDetails), null, When.Always, CommandFlags.None));
+            mockQuerier.Verify(m => m.Set("AutoMapper", nuspecPackageInfoLike(packageDetails)));
         }
 
-        private RedisValue stringWithAttributesLike(NuspecParser.PackageDetails packageDetails)
+        private INuspecPackageInfo nuspecPackageInfoLike(NuspecParser.PackageDetails packageDetails)
         {
-            return It.Is<RedisValue>(rv =>
-                 JObject.Parse(rv.ToString())["Id"].ToString() == packageDetails.Id &&
-                 JObject.Parse(rv.ToString())["Version"].ToString() == packageDetails.Version &&
-                 JObject.Parse(rv.ToString())["Description"].ToString() == packageDetails.Description &&
-                 JObject.Parse(rv.ToString())["Owners"].ToString() == packageDetails.Owners
+            return It.Is<INuspecPackageInfo>(rv =>
+                 rv.Id == packageDetails.Id &&
+                 rv.Version == packageDetails.Version &&
+                 rv.Description == packageDetails.Description &&
+                 rv.Owners == packageDetails.Owners
             );
         }
     }

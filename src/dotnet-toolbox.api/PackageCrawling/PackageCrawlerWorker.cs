@@ -3,6 +3,8 @@ using System.Threading;
 using StackExchange.Redis;
 using dotnet_toolbox.api.Env;
 using Microsoft.Extensions.Logging;
+using dotnet_toolbox.api.Query;
+using dotnet_toolbox.api.Models;
 
 namespace dotnet_toolbox.api.PackageCrawling
 {
@@ -29,7 +31,8 @@ namespace dotnet_toolbox.api.PackageCrawling
         public void Run()
         {
             logger.LogInformation("Starting crawler");
-            new PackageCrawlerJobListener(timerProvider, CreatePackagesDbConnection(), new Crawler(CreatePackagesDbConnection(), new NuspecDownload())).Listen();
+            var querier = new RedisGetSetQuery<INuspecPackageInfo>(CreatePackagesDbConnection(), Constants.Redis.PackageKeyForName);
+            new PackageCrawlerJobListener(timerProvider, CreatePackagesDbConnection(), new Crawler(querier, new NuspecDownload())).Listen();
         }
 
         private IDatabase CreatePackagesDbConnection()

@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 using System;
 using System.Linq.Expressions;
 
-namespace dotnet_toolbox.api.tests.Models
+namespace dotnet_toolbox.api.tests.Query
 {
     public class RedisQueryTest
     {

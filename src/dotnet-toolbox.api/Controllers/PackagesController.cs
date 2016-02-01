@@ -2,6 +2,9 @@ using Microsoft.AspNet.Mvc;
 using dotnet_toolbox.api.Models;
 using dotnet_toolbox.api.Nuget;
 using dotnet_toolbox.api.Query;
+using System;
+using System.Collections.Generic;
+using NodaTime;
 
 namespace dotnet_toolbox.api.Controllers
 {
@@ -11,12 +14,14 @@ namespace dotnet_toolbox.api.Controllers
         INugetApi nugetApi;
         IPackageCrawlerJobQueue queue;
         private IGetSetQuerier<Package> redisQuerier;
+        ILatestPackagesIndex latestPackages;
 
-        public PackagesController(INugetApi nugetApi, IPackageCrawlerJobQueue queue, IGetSetQuerier<Package> redisQuery)
+        public PackagesController(INugetApi nugetApi, IPackageCrawlerJobQueue queue, IGetSetQuerier<Package> redisQuery, ILatestPackagesIndex latestPackages)
         {
             this.nugetApi = nugetApi;
             this.queue = queue;
             this.redisQuerier = redisQuery;
+            this.latestPackages = latestPackages;
         }
 
         [HttpPost]
@@ -39,6 +44,7 @@ namespace dotnet_toolbox.api.Controllers
             if (existingPackage == null)
             {
                 redisQuerier.Set(package.Name, new Package { Name = package.Name });
+                latestPackages.Update(SystemClock.Instance.GetCurrentInstant().Ticks, package.Name);
             }
         }
 

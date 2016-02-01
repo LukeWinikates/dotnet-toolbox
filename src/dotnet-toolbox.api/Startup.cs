@@ -43,6 +43,7 @@ namespace dotnet_toolbox.api
             });
             var builder = new ContainerBuilder();
             builder.Register(_ => EnvironmentReader.FromEnvironment());
+            builder.RegisterType<LatestPackagesQuery>().As<ILatestPackagesIndex>();
             builder.RegisterType<Nuget.NugetApi>().As<Nuget.INugetApi>().InstancePerLifetimeScope();
             builder.RegisterType<PackageCrawlerJobQueue>().As<IPackageCrawlerJobQueue>();
             builder.Register((Func<IComponentContext, Query.RedisGetSetQuery<Package>>)(cc => new RedisGetSetQuery<Package>(cc.Resolve<IDatabase>(), api.Env.Constants.Redis.PackageKeyForName))).As<IGetSetQuerier<Package>>();

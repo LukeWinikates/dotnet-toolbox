@@ -5,6 +5,7 @@ using dotnet_toolbox.api.Query;
 using System;
 using System.Collections.Generic;
 using NodaTime;
+using System.Linq;
 
 namespace dotnet_toolbox.api.Controllers
 {
@@ -58,6 +59,12 @@ namespace dotnet_toolbox.api.Controllers
         public Package GetByName(string packageName)
         {
             return redisQuerier.Get(packageName);
+        }
+        
+        [HttpGet]
+        public IEnumerable<Package> GetRecent()
+        {
+            return latestPackages.Get().Select(redisQuerier.Get).ToArray();
         }
     }
 }

@@ -4,6 +4,7 @@ using dotnet_toolbox.api.Nuget;
 using Moq;
 using dotnet_toolbox.api.Models;
 using dotnet_toolbox.api.Query;
+using System.Linq;
 
 namespace dotnet_toolbox.api.tests.Controllers
 {
@@ -80,6 +81,14 @@ namespace dotnet_toolbox.api.tests.Controllers
             mockRedisQuery.Setup(m => m.Get("Dracula")).Returns(new Package { Name = "Dracula" });
             var package = controller.GetByName("Dracula");
             Assert.Equal("Dracula", package.Name);
+        }
+        
+        [Fact]
+        public void GetRecent_ReturnsResultsFromRecentPackagesIndex() {
+            mockLatestPackagesQuery.Setup(m => m.Get()).Returns(new []{"a", "b", "c"});
+            mockRedisQuery.Setup(m => m.Get(It.IsAny<string>())).Returns<string>(s => new Package{ Name = s });
+            var packages = controller.GetRecent();
+            Assert.Equal(new[] {"a", "b", "c"}, packages.Select(p => p.Name));
         }
     }
 }

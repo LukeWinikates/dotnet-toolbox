@@ -7,14 +7,20 @@ describe('PackageAdder', () => {
   });
 
   it('loads the categories from the api', () => {
-    var request = jasmine.Ajax.requests.mostRecent();
+    var request = jasmine.Ajax.requests.filter(/api\/categories/).pop();
     expect(request).toBeDefined();
     expect(request.url).toBe('/api/categories');
   });
 
+  it('loads the most recently added packages', () => {
+    var request = jasmine.Ajax.requests.filter(/api\/packages/).pop();
+    expect(request).toBeDefined();
+    expect(request.url).toBe('/api/packages');
+  });
+
   describe('when the categories finish loading', () => {
     beforeEach(() => {
-      var request = jasmine.Ajax.requests.mostRecent();
+      var request = jasmine.Ajax.requests.filter(/api\/categories/).pop();
       request.respondWith({
         status: 200,
         responseText: JSON.stringify([
@@ -35,6 +41,21 @@ describe('PackageAdder', () => {
       expect($('#root .category:eq(0) .package:eq(0)').text()).toEqual('Cool Logging');
       expect($('#root .category:eq(1) .package:eq(1)').text()).toEqual('Neat Gzip');
       expect($('#root .category:eq(2) .package:eq(0)').text()).toContain('The Only Rad Stuff');
+    });
+  });
+
+  describe('when the recent packages request completes', () => {
+    beforeEach(() => {
+      var request = jasmine.Ajax.requests.filter(/api\/packages/).pop();
+      request.respondWith({
+        status: 200,
+        responseText: JSON.stringify([{id: 'Recent Radness'}, {id: 'New Hotness'}])
+      });
+    });
+
+    it('shows the recent packages as another category', () => {
+      expect($('#root .category h3').eq(0).text()).toEqual('Recently Added');
+      expect($('#root .category:eq(0) .package:eq(0)').text()).toContain('Recent Radness');
     });
   });
 });

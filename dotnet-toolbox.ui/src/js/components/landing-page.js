@@ -43,8 +43,32 @@ var Category = React.createClass({
   }
 });
 
+var RecentlyAddedCategory = React.createClass({
+  componentDidMount() {
+    $.ajax({
+      type: 'get',
+      url: '/api/packages',
+      contentType: 'application/json'
+    }).then(packages => {
+      this.setState({packages: packages});
+    });
+  },
+  getInitialState() {
+    return {};
+  },
+  render() {
+    if(this.state.packages) {
+      return (<Category category={{title: "Recently Added", packages: this.state.packages}}/>);
+    }
+    return (<marquee>...</marquee>);
+  }
+});
+
 var LandingPage =
   React.createClass({
+    getInitialState() {
+      return {}
+    },
     componentDidMount() {
       $.ajax({
         type: 'get',
@@ -66,6 +90,7 @@ var LandingPage =
               return (<Category key={c.title} category={c}/>)
             })
           }
+          <RecentlyAddedCategory/>
         </div>
       )
     }

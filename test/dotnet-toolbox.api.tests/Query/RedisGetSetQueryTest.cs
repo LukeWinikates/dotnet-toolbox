@@ -23,7 +23,7 @@ namespace dotnet_toolbox.api.tests.Query
         [Fact]
         public void Get_WhenTypeIsPackage_FindsThePackageInRedisDb()
         {
-            mockRedisDatabase.Setup(m => m.HashGetAll(("packages.GameOfLife"), CommandFlags.None))
+            mockRedisDatabase.Setup(m => m.HashGetAll(Constants.Redis.PackageKeyForName("GameOfLife"), CommandFlags.None))
                 .Returns(new Package { Name = "GameOfLife" }.AsRedisHash());
             var package = subject.Get("GameOfLife");
             Assert.Equal(package.Name, "GameOfLife");

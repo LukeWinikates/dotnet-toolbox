@@ -6,6 +6,8 @@ var LeaderPanel = require('./layout').LeaderPanel;
 var Details = React.createClass({
   render() {
     return (<section>
+      <div className="h3">{this.props.package.id}</div>
+
       <blockquote><em>"{this.props.package.description}"</em></blockquote>
       <p><strong>owners: </strong>{this.props.package.owners}</p>
       <p><strong>version: </strong>{this.props.package.version}</p>
@@ -39,7 +41,6 @@ var PackagePage =
     render() {
       return (
         <LeaderPanel>
-          <div className="h3">{this.props.params.packageName}</div>
           {
             (() => {
               if (this.state.package) {

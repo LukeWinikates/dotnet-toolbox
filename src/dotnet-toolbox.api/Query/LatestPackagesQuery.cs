@@ -21,7 +21,7 @@ namespace dotnet_toolbox.api.Query
 
         public void Update(long timestamp, string packageName)
         {
-            this.redisDatabase.SortedSetAdd("RecentPackages", packageName, timestamp, CommandFlags.None);
+            this.redisDatabase.SortedSetAdd("RecentPackages", packageName.ToLowerInvariant().Trim(), timestamp, CommandFlags.None);
         }
     }
 }

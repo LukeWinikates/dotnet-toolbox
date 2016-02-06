@@ -30,7 +30,7 @@ namespace dotnet_toolbox.api.tests.Query
         {
             var subject = new LatestPackagesQuery(redisDatabase.Object);
             subject.Update(fakeClock.GetCurrentInstant().Ticks, "NodaTime");
-            redisDatabase.Verify(m => m.SortedSetAdd("RecentPackages", "NodaTime", 1001, CommandFlags.None));
+            redisDatabase.Verify(m => m.SortedSetAdd("RecentPackages", "nodatime", 1001, CommandFlags.None));
         }
     }
 }

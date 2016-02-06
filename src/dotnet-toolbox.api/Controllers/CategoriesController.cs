@@ -9,6 +9,13 @@ namespace dotnet_toolbox.api.Controllers
     [Route("api/[controller]")]
     public class CategoriesController : Controller
     {
+        private const string NANCY = "Nancy";
+        private const string ASP_NET_MVC = "Microsoft.AspNet.Mvc";
+        private const string NINJECT = "Ninject";
+        private const string WINDSOR = "Castle.Windsor";
+        private const string AUTOFAC = "Autofac";
+        private const string NUNIT = "NUnit";
+        private const string XUNIT = "xunit";
         private IGetSetQuerier<Package> querier;
 
         public CategoriesController(IGetSetQuerier<Package> querier)
@@ -20,13 +27,13 @@ namespace dotnet_toolbox.api.Controllers
         {
             return new[] {
                 new Category { Title = "Web Frameworks",
-                    Packages = Packages("Nancy", "Microsoft.AspNet.Mvc")
+                    Packages = Packages(NANCY, ASP_NET_MVC)
                 },
                 new Category { Title = "Dependency Injection",
-                    Packages = Packages("Ninject", "Castle.Windsor", "Autofac")
+                    Packages = Packages(NINJECT, WINDSOR, AUTOFAC)
                 },
                 new Category { Title = "Unit Test Runners",
-                    Packages = Packages("xunit", "NUnit")
+                    Packages = Packages(XUNIT, NUNIT)
                 }
             };
         }
@@ -35,5 +42,7 @@ namespace dotnet_toolbox.api.Controllers
         {
             return packages.Select(querier.Get);
         }
+        
+        public static IEnumerable<string> KeyPackageNames = new string[] { NANCY, ASP_NET_MVC, NINJECT, WINDSOR, AUTOFAC, XUNIT, NUNIT };
     }
 }

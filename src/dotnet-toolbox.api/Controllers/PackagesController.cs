@@ -1,11 +1,10 @@
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNet.Mvc;
+using NodaTime;
 using dotnet_toolbox.api.Models;
 using dotnet_toolbox.api.Nuget;
 using dotnet_toolbox.api.Query;
-using System;
-using System.Collections.Generic;
-using NodaTime;
-using System.Linq;
 
 namespace dotnet_toolbox.api.Controllers
 {

@@ -1,21 +1,21 @@
-using Xunit;
-using dotnet_toolbox.api.Models;
-using dotnet_toolbox.api.Query;
-using Moq;
-using StackExchange.Redis;
-using dotnet_toolbox.api.Env;
-using Newtonsoft.Json;
 using System;
 using System.Linq.Expressions;
+using Moq;
+using StackExchange.Redis;
+using Xunit;
+using dotnet_toolbox.api.Env;
+using dotnet_toolbox.api.Models;
+using dotnet_toolbox.api.Query;
+using System.Linq;
 
 namespace dotnet_toolbox.api.tests.Query
 {
-    public class RedisQueryTest
+    public class RedisGetSetQueryTest
     {
         Mock<IDatabase> mockRedisDatabase = new Mock<IDatabase>();
         RedisGetSetQuery<Package> subject;
 
-        public RedisQueryTest()
+        public RedisGetSetQueryTest()
         {
             subject = new RedisGetSetQuery<Package>(mockRedisDatabase.Object, Constants.Redis.PackageKeyForName);
         }
@@ -23,8 +23,8 @@ namespace dotnet_toolbox.api.tests.Query
         [Fact]
         public void Get_WhenTypeIsPackage_FindsThePackageInRedisDb()
         {
-            mockRedisDatabase.Setup(m => m.StringGet(("packages.GameOfLife"), CommandFlags.None))
-                .Returns(JsonConvert.SerializeObject(new Package { Name = "GameOfLife" }));
+            mockRedisDatabase.Setup(m => m.HashGetAll(("packages.GameOfLife"), CommandFlags.None))
+                .Returns(new Package { Name = "GameOfLife" }.AsRedisHash());
             var package = subject.Get("GameOfLife");
             Assert.Equal(package.Name, "GameOfLife");
         }
@@ -32,7 +32,7 @@ namespace dotnet_toolbox.api.tests.Query
         [Fact]
         public void Get_WhenRedisValueIsNull_ReturnsNull()
         {
-            mockRedisDatabase.Setup(m => m.StringGet(It.IsAny<RedisKey>(), It.IsAny<CommandFlags>())).Returns(RedisValue.Null);
+            mockRedisDatabase.Setup(m => m.HashGetAll(It.IsAny<RedisKey>(), It.IsAny<CommandFlags>())).Returns(new HashEntry[] {});
             Assert.Null(subject.Get("Null!"));
         }
 
@@ -40,10 +40,10 @@ namespace dotnet_toolbox.api.tests.Query
         public void Set_SavesAJsonRepresentationOfThePackage()
         {
             subject.Set("GameOfLife", new Package { Name = "GameOfLife", Version = "1.1.0" });
-            Expression<Func<RedisValue,bool>> aRedisValueThatLooksRight = (r =>
-                 JsonConvert.DeserializeObject<Package>(r).Pipe(p => p.Name == "GameOfLife" && p.Version == "1.1.0"));
+            Expression<Func<HashEntry[],bool>> aRedisValueThatLooksRight = (r =>
+                 new Package().DoTo(p=>p.FromRedisHash(r)).Pipe(p => p.Name == "GameOfLife" && p.Version == "1.1.0"));
             mockRedisDatabase.Verify(
-                m => m.StringSet(Constants.Redis.PackageKeyForName("GameOfLife"), It.Is(aRedisValueThatLooksRight), null, When.Always, CommandFlags.None));
+                m => m.HashSet(Constants.Redis.PackageKeyForName("GameOfLife"), It.Is(aRedisValueThatLooksRight), CommandFlags.None));
         }
     }
 }

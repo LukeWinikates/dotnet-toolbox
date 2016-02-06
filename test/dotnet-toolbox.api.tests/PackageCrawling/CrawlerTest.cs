@@ -1,6 +1,5 @@
 using Moq;
 using Xunit;
-using dotnet_toolbox.api.Models;
 using dotnet_toolbox.api.PackageCrawling;
 using dotnet_toolbox.api.Query;
 
@@ -12,7 +11,7 @@ namespace dotnet_toolbox.api.tests.PackageCrawling
         public void CrawlProject_GetsNuspecFromNugetAndStoresContents()
         {
             var mockNuspecDownloader = new Mock<INuspecDownload>();
-            var mockQuerier = new Mock<IGetSetQuerier<INuspecPackageInfo>>();
+            var mockQuerier = new Mock<IGetSetQuerier<NuspecParser.PackageDetails>>();
 
             var packageDetails = new NuspecParser.PackageDetails
             {
@@ -28,9 +27,9 @@ namespace dotnet_toolbox.api.tests.PackageCrawling
             mockQuerier.Verify(m => m.Set("AutoMapper", nuspecPackageInfoLike(packageDetails)));
         }
 
-        private INuspecPackageInfo nuspecPackageInfoLike(NuspecParser.PackageDetails packageDetails)
+        private NuspecParser.PackageDetails nuspecPackageInfoLike(NuspecParser.PackageDetails packageDetails)
         {
-            return It.Is<INuspecPackageInfo>(rv =>
+            return It.Is<NuspecParser.PackageDetails>(rv =>
                  rv.Id == packageDetails.Id &&
                  rv.Version == packageDetails.Version &&
                  rv.Description == packageDetails.Description &&

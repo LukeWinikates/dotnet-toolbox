@@ -4,5 +4,5 @@ namespace dotnet_toolbox.api.Query
     {
         T Get(string key);
         void Set(string key, T value);
-    }    
+    }
 }

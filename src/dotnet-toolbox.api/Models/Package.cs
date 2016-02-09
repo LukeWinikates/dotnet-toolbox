@@ -17,6 +17,9 @@ namespace dotnet_toolbox.api.Models
         public HashEntry[] AsRedisHash() => new HashConverter(this).AsRedisHash().Concat(
             new[] { new HashEntry("Name", Name), new HashEntry("TotalDownloads", TotalDownloads) }).Where(e => !e.Value.IsNull).ToArray();
 
-        public void FromRedisHash(HashEntry[] entries) => this.DoTo(p => p.Name = entries.ValueFor("Name"), p => new HashConverter(this).FromRedisHash(entries));
+        public void FromRedisHash(HashEntry[] entries) => this.DoTo(
+            p =>  p.Name = entries.ValueFor("Name"),
+            p => p.TotalDownloads = entries.IntValueFor("TotalDownloads"),
+            p => new HashConverter(this).FromRedisHash(entries));
     }
 }

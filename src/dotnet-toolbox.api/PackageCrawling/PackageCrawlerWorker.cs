@@ -1,12 +1,10 @@
-using System;
-using System.Threading;
+using System.Linq;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
-using dotnet_toolbox.api.Env;
-using dotnet_toolbox.api.Query;
-using dotnet_toolbox.api.Nuget;
 using dotnet_toolbox.api.Controllers;
-using System.Linq;
+using dotnet_toolbox.api.Env;
+using dotnet_toolbox.api.Nuget;
+using dotnet_toolbox.api.Query;
 
 namespace dotnet_toolbox.api.PackageCrawling
 {
@@ -29,7 +27,6 @@ namespace dotnet_toolbox.api.PackageCrawling
             var muxer = ConnectionMultiplexer.Connect(EnvironmentReader.FromEnvironment().RedisConnectionString);
             var timerProvider = new RealTimerProvider();
             var worker = new PackageCrawlerWorker(muxer, timerProvider, new PackageCrawlerJobQueue(muxer.GetDatabase(Constants.Redis.PACKAGES_DB)));
-            
             worker.Run();
         }
 
@@ -47,18 +44,4 @@ namespace dotnet_toolbox.api.PackageCrawling
         }
     }
 
-    public class RealTimerProvider : ITimerProvider
-    {
-        ILogger logger = LoggingConfiguration.CreateLogger<RealTimerProvider>();
-        public Timer StartWithCallback(Action action)
-        {
-            var timer = new Timer(_ =>
-            {
-                logger.LogDebug("Timer triggered");
-                action();
-                logger.LogDebug("Timer callback completed");
-            }, null, 1000, 2000);
-            return timer;
-        }
-    }
 }

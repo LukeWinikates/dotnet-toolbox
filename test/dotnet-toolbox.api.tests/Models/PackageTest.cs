@@ -26,7 +26,8 @@ namespace dotnet_toolbox.api.tests.Models
                 Id = "Foo",
                 Version = "1.5.7",
                 Owners = "Perseus Fizzibuzz",
-                Description = "Popular Examples"
+                Description = "Popular Examples",
+                TotalDownloads = 30 * 1000
             }.AsRedisHash();
             
             Assert.Equal("Foo", fields.ValueFor("Name"));
@@ -34,6 +35,7 @@ namespace dotnet_toolbox.api.tests.Models
             Assert.Equal("1.5.7", fields.ValueFor("Version"));
             Assert.Equal("Perseus Fizzibuzz", fields.ValueFor("Owners"));
             Assert.Equal("Popular Examples", fields.ValueFor("Description"));
+            Assert.Equal(30 * 1000, fields.ValueFor("TotalDownloads"));
         }
     }
 }

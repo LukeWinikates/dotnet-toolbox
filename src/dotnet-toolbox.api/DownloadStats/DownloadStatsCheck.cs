@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace dotnet_toolbox.api.DownloadStats
 {
-    public class DownloadStatsCheck
+    public class DownloadStatsCheck : IDownloadStatsCheck
     {
         public Stats Download(string nugetPackageName, string version)
         {
@@ -22,10 +22,10 @@ namespace dotnet_toolbox.api.DownloadStats
                     TotalDownloads = Int32.Parse(xml.Descendants().FirstOrDefault(el => el.Name.LocalName == "DownloadCount")?.Value?.ToString())
                 });
         }
+    }
 
-        public class Stats
-        {
-            public int TotalDownloads { get; set; }
-        }
+    public interface IDownloadStatsCheck
+    {
+        Stats Download(string nugetPackageName, string version);
     }
 }

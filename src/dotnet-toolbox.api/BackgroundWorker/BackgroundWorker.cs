@@ -40,7 +40,7 @@ namespace dotnet_toolbox.api.BackgroundWorker
             IGetSetQuerier<PackageDetails> querier = new RedisGetSetQuery<PackageDetails>(CreatePackagesDbConnection(), Constants.Redis.PackageKeyForName);
             this.jobQueue.DoTo(q => CategoriesController.KeyPackageNames.Select(n => { q.EnqueueJob(n); return true; }).ToArray());
             new BackgroundJobListener(timerProvider, CreatePackagesDbConnection(), Constants.Redis.PackageCrawlerJobQueueName)
-                .ListenWith(new Crawler(querier, new NuspecDownloader()).CrawlProject);
+                .ListenWith(new Crawler(querier, new NuspecDownloader(), new JobQueue(CreatePackagesDbConnection(), Constants.Redis.DownloadStatsCheckerQueue)).CrawlProject);
             new BackgroundJobListener(timerProvider, CreatePackagesDbConnection(), Constants.Redis.DownloadStatsCheckerQueue)
                 .ListenWith(new DownloadStatsChecker(
                     new RedisGetSetQuery<Package>(CreatePackagesDbConnection(), Constants.Redis.PackageKeyForName), 

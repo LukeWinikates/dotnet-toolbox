@@ -2,17 +2,19 @@ using Moq;
 using Xunit;
 using dotnet_toolbox.api.NuspecCrawler;
 using dotnet_toolbox.api.Query;
+using dotnet_toolbox.api.BackgroundWorker;
 
 namespace dotnet_toolbox.api.tests.NuspecCrawler
 {
     public class CrawlerTest
     {
-        [Fact]
-        public void CrawlProject_GetsNuspecFromNugetAndStoresContents()
-        {
-            var mockNuspecDownloader = new Mock<INuspecDownloader>();
-            var mockQuerier = new Mock<IGetSetQuerier<PackageDetails>>();
+        Mock<INuspecDownloader> mockNuspecDownloader = new Mock<INuspecDownloader>();
+        Mock<IGetSetQuerier<PackageDetails>> mockQuerier = new Mock<IGetSetQuerier<PackageDetails>>();
+        Mock<IJobQueue> downloadStatsJobQueue = new Mock<IJobQueue>();
+        Crawler crawler;
 
+        public CrawlerTest()
+        {
             var packageDetails = @"
             <metadata>
           <id>AutoMapper</id>
@@ -22,9 +24,22 @@ namespace dotnet_toolbox.api.tests.NuspecCrawler
           </metadata>";
             mockNuspecDownloader.Setup(m => m.Download("AutoMapper"))
                 .Returns(packageDetails);
-            var crawler = new Crawler(mockQuerier.Object, mockNuspecDownloader.Object);
+            crawler = new Crawler(mockQuerier.Object, mockNuspecDownloader.Object, downloadStatsJobQueue.Object);
+
+        }
+
+        [Fact]
+        public void CrawlProject_GetsNuspecFromNugetAndStoresContents()
+        {
             crawler.CrawlProject("AutoMapper");
             mockQuerier.Verify(m => m.Set("AutoMapper", nuspecPackageInfoLike()));
+        }
+
+        [Fact]
+        public void CrawlProject_QueuesADownloadStatsCheck()
+        {
+            crawler.CrawlProject("AutoMapper");
+            downloadStatsJobQueue.Verify(m => m.EnqueueJob("AutoMapper"));
         }
 
         private PackageDetails nuspecPackageInfoLike()

@@ -33,10 +33,11 @@ namespace dotnet_toolbox.api.BackgroundWorker
 
         public void Run()
         {
-            logger.LogInformation("Starting crawler");
+            logger.LogInformation("Starting background jobs");
             IGetSetQuerier<PackageDetails> querier = new RedisGetSetQuery<PackageDetails>(CreatePackagesDbConnection(), Constants.Redis.PackageKeyForName);
             this.jobQueue.DoTo(q => CategoriesController.KeyPackageNames.Select(n => { q.EnqueueJob(n); return true; }).ToArray());
-            new PackageCrawlerJobListener(timerProvider, CreatePackagesDbConnection(), new Crawler(querier, new NuspecDownloader())).Listen();
+            new BackgroundJobListener(timerProvider, CreatePackagesDbConnection(), Constants.Redis.PackageCrawlerJobQueueName)
+                .ListenWith(new Crawler(querier, new NuspecDownloader()).CrawlProject);
         }
 
         private IDatabase CreatePackagesDbConnection()

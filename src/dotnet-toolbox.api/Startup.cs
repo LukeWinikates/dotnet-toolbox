@@ -9,10 +9,10 @@ using System;
 using Microsoft.AspNet.StaticFiles;
 using StackExchange.Redis;
 using dotnet_toolbox.api.Env;
-using dotnet_toolbox.api.Nuget;
 using Newtonsoft.Json.Serialization;
 using dotnet_toolbox.api.Query;
 using dotnet_toolbox.api.Models;
+using dotnet_toolbox.api.BackgroundWorker;
 
 namespace dotnet_toolbox.api
 {
@@ -44,7 +44,7 @@ namespace dotnet_toolbox.api
             builder.Register(_ => EnvironmentReader.FromEnvironment());
             builder.RegisterType<LatestPackagesQuery>().As<ILatestPackagesIndex>();
             builder.RegisterType<Nuget.NugetApi>().As<Nuget.INugetApi>().InstancePerLifetimeScope();
-            builder.RegisterType<PackageCrawlerJobQueue>().As<IPackageCrawlerJobQueue>();
+            builder.RegisterType<JobQueueFactory>().As<IJobQueueFactory>();
             builder.Register((Func<IComponentContext, Query.RedisGetSetQuery<Package>>)(cc => new RedisGetSetQuery<Package>(cc.Resolve<IDatabase>(), api.Env.Constants.Redis.PackageKeyForName))).As<IGetSetQuerier<Package>>();
             builder.Register(BuildConnectionMultiplexer).As<ConnectionMultiplexer>().SingleInstance();
             builder.Register(componentContext => componentContext.Resolve<ConnectionMultiplexer>().GetDatabase(api.Env.Constants.Redis.PACKAGES_DB)).As<IDatabase>().InstancePerLifetimeScope();

@@ -5,6 +5,8 @@ using NodaTime;
 using dotnet_toolbox.api.Models;
 using dotnet_toolbox.api.Nuget;
 using dotnet_toolbox.api.Query;
+using dotnet_toolbox.api.BackgroundWorker;
+using dotnet_toolbox.api.Env;
 
 namespace dotnet_toolbox.api.Controllers
 {
@@ -12,14 +14,14 @@ namespace dotnet_toolbox.api.Controllers
     public class PackagesController : Controller
     {
         INugetApi nugetApi;
-        IPackageCrawlerJobQueue queue;
+        IJobQueue packageCrawlerJobQueue;
         private IGetSetQuerier<Package> redisQuerier;
         ILatestPackagesIndex latestPackages;
 
-        public PackagesController(INugetApi nugetApi, IPackageCrawlerJobQueue queue, IGetSetQuerier<Package> redisQuery, ILatestPackagesIndex latestPackages)
+        public PackagesController(INugetApi nugetApi, IJobQueueFactory queueFactory, IGetSetQuerier<Package> redisQuery, ILatestPackagesIndex latestPackages)
         {
             this.nugetApi = nugetApi;
-            this.queue = queue;
+            this.packageCrawlerJobQueue = queueFactory.ForQueueName(Constants.Redis.PackageCrawlerJobQueueName);
             this.redisQuerier = redisQuery;
             this.latestPackages = latestPackages;
         }
@@ -33,7 +35,7 @@ namespace dotnet_toolbox.api.Controllers
                 return new HttpStatusCodeResult(404);
             }
             EnsurePackageEntryExistsInDatabase(package);
-            queue.EnqueueJob(package.Name);
+            packageCrawlerJobQueue.EnqueueJob(package.Name);
 
             return new HttpStatusCodeResult(200);
         }

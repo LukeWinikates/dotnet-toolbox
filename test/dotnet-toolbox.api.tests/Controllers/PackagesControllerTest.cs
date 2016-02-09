@@ -1,10 +1,12 @@
-using Xunit;
-using dotnet_toolbox.api.Controllers;
-using dotnet_toolbox.api.Nuget;
-using Moq;
-using dotnet_toolbox.api.Models;
-using dotnet_toolbox.api.Query;
 using System.Linq;
+using Moq;
+using Xunit;
+using dotnet_toolbox.api.BackgroundWorker;
+using dotnet_toolbox.api.Controllers;
+using dotnet_toolbox.api.Models;
+using dotnet_toolbox.api.Nuget;
+using dotnet_toolbox.api.Query;
+using dotnet_toolbox.api.Env;
 
 namespace dotnet_toolbox.api.tests.Controllers
 {
@@ -12,15 +14,17 @@ namespace dotnet_toolbox.api.tests.Controllers
     {
         Mock<INugetApi> mockNugetApi = new Mock<INugetApi>();
         PackagesController controller;
-        Mock<IPackageCrawlerJobQueue> mockJobQueue = new Mock<IPackageCrawlerJobQueue>();
+        Mock<IJobQueueFactory> mockJobQueueFactory = new Mock<IJobQueueFactory>();
+        Mock<IJobQueue> mockJobQueue = new Mock<IJobQueue>();
         Mock<IGetSetQuerier<Package>> mockRedisQuery = new Mock<IGetSetQuerier<Package>>();
         Mock<ILatestPackagesIndex> mockLatestPackagesQuery = new Mock<ILatestPackagesIndex>();
 
         public PackagesControllerTest()
         {
+            mockJobQueueFactory.Setup(m => m.ForQueueName(Constants.Redis.PackageCrawlerJobQueueName)).Returns(mockJobQueue.Object);
             controller = new PackagesController(
                  mockNugetApi.Object,
-                 mockJobQueue.Object,
+                 mockJobQueueFactory.Object,
                  mockRedisQuery.Object,
                  mockLatestPackagesQuery.Object);
         }

@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using dotnet_toolbox.api.Controllers;
 using dotnet_toolbox.api.Env;
-using dotnet_toolbox.api.Nuget;
 using dotnet_toolbox.api.Query;
 using dotnet_toolbox.api.NuspecCrawler;
 using dotnet_toolbox.api.DownloadStats;
@@ -16,9 +15,9 @@ namespace dotnet_toolbox.api.BackgroundWorker
         ILogger logger = LoggingConfiguration.CreateLogger<BackgroundWorker>();
         private ConnectionMultiplexer muxer;
         private RealTimerProvider timerProvider;
-        IPackageCrawlerJobQueue jobQueue;
+        IJobQueue jobQueue;
 
-        public BackgroundWorker(ConnectionMultiplexer muxer, RealTimerProvider timerProvider, IPackageCrawlerJobQueue jobQueue)
+        public BackgroundWorker(ConnectionMultiplexer muxer, RealTimerProvider timerProvider, IJobQueue jobQueue)
         {
             this.muxer = muxer;
             this.timerProvider = timerProvider;
@@ -29,7 +28,9 @@ namespace dotnet_toolbox.api.BackgroundWorker
         {
             var muxer = ConnectionMultiplexer.Connect(EnvironmentReader.FromEnvironment().RedisConnectionString);
             var timerProvider = new RealTimerProvider();
-            var worker = new BackgroundWorker(muxer, timerProvider, new PackageCrawlerJobQueue(muxer.GetDatabase(Constants.Redis.PACKAGES_DB)));
+            var worker = new BackgroundWorker(muxer, timerProvider, 
+                new JobQueueFactory(muxer.GetDatabase(Constants.Redis.PACKAGES_DB))
+                .ForQueueName(Constants.Redis.PackageCrawlerJobQueueName));
             worker.Run();
         }
 

@@ -4,7 +4,7 @@ using dotnet_toolbox.api.NuspecCrawler;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 
-namespace dotnet_toolbox.api.PackageCrawling
+namespace dotnet_toolbox.api.BackgroundWorker
 {
     public class PackageCrawlerJobListener
     {

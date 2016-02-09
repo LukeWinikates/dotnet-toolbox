@@ -7,7 +7,7 @@ using dotnet_toolbox.api.Nuget;
 using dotnet_toolbox.api.Query;
 using dotnet_toolbox.api.NuspecCrawler;
 
-namespace dotnet_toolbox.api.PackageCrawling
+namespace dotnet_toolbox.api.BackgroundWorker
 {
     public class PackageCrawlerWorker
     {

@@ -1,12 +1,12 @@
 using System;
 using System.Threading;
 using dotnet_toolbox.api.NuspecCrawler;
-using dotnet_toolbox.api.PackageCrawling;
+using dotnet_toolbox.api.BackgroundWorker;
 using Moq;
 using StackExchange.Redis;
 using Xunit;
 
-namespace dotnet_toolbox.api.tests.PackageCrawling
+namespace dotnet_toolbox.api.tests.BackgroundWorker
 {
     public class PackageCrawlerJobListenerTest
     {

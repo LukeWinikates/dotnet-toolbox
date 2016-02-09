@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 
-namespace dotnet_toolbox.api.PackageCrawling
+namespace dotnet_toolbox.api.BackgroundWorker
 {
     public interface ITimerProvider
     {

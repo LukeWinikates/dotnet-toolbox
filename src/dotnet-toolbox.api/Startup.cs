@@ -11,7 +11,6 @@ using StackExchange.Redis;
 using dotnet_toolbox.api.Env;
 using dotnet_toolbox.api.Nuget;
 using Newtonsoft.Json.Serialization;
-using dotnet_toolbox.api.BackgroundWorker;
 using dotnet_toolbox.api.Query;
 using dotnet_toolbox.api.Models;
 
@@ -24,7 +23,7 @@ namespace dotnet_toolbox.api
         public Startup(IHostingEnvironment env)
         {
             LoggingConfiguration.StartConsoleLogging();
-            PackageCrawlerWorker.Start();
+            BackgroundWorker.BackgroundWorker.Start();
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")

@@ -6,7 +6,6 @@ using Xunit;
 using dotnet_toolbox.api.Env;
 using dotnet_toolbox.api.Models;
 using dotnet_toolbox.api.Query;
-using System.Linq;
 
 namespace dotnet_toolbox.api.tests.Query
 {

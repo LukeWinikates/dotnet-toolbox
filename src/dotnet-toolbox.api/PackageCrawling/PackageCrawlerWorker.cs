@@ -5,6 +5,7 @@ using dotnet_toolbox.api.Controllers;
 using dotnet_toolbox.api.Env;
 using dotnet_toolbox.api.Nuget;
 using dotnet_toolbox.api.Query;
+using dotnet_toolbox.api.NuspecCrawler;
 
 namespace dotnet_toolbox.api.PackageCrawling
 {
@@ -33,9 +34,9 @@ namespace dotnet_toolbox.api.PackageCrawling
         public void Run()
         {
             logger.LogInformation("Starting crawler");
-            IGetSetQuerier<NuspecParser.PackageDetails> querier = new RedisGetSetQuery<NuspecParser.PackageDetails>(CreatePackagesDbConnection(), Constants.Redis.PackageKeyForName);
+            IGetSetQuerier<PackageDetails> querier = new RedisGetSetQuery<PackageDetails>(CreatePackagesDbConnection(), Constants.Redis.PackageKeyForName);
             this.jobQueue.DoTo(q => CategoriesController.KeyPackageNames.Select(n => { q.EnqueueJob(n); return true; }).ToArray());
-            new PackageCrawlerJobListener(timerProvider, CreatePackagesDbConnection(), new Crawler(querier, new NuspecDownload())).Listen();
+            new PackageCrawlerJobListener(timerProvider, CreatePackagesDbConnection(), new Crawler(querier, new NuspecDownloader())).Listen();
         }
 
         private IDatabase CreatePackagesDbConnection()

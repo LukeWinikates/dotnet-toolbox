@@ -1,7 +1,7 @@
-using dotnet_toolbox.api.PackageCrawling;
+using dotnet_toolbox.api.NuspecCrawler;
 using Xunit;
 
-namespace dotnet_toolbox.api.tests.PackageCrawling
+namespace dotnet_toolbox.api.tests.NuspecCrawler
 {
     public class NuspecDownloaderTest
     {

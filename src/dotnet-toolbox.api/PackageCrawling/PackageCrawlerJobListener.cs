@@ -1,5 +1,6 @@
 using System;
 using dotnet_toolbox.api.Env;
+using dotnet_toolbox.api.NuspecCrawler;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 

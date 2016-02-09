@@ -4,9 +4,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 
-namespace dotnet_toolbox.api.PackageCrawling
+namespace dotnet_toolbox.api.NuspecCrawler
 {
-    public class NuspecDownloader
+    public class NuspecDownloader : INuspecDownloader
     {
         public string Download(string packageName)
         {

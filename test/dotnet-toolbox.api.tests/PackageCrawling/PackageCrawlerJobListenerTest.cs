@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using dotnet_toolbox.api.NuspecCrawler;
 using dotnet_toolbox.api.PackageCrawling;
 using Moq;
 using StackExchange.Redis;

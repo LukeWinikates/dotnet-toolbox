@@ -2,13 +2,16 @@ import React from 'react';
 
 var LandingPage = require('./components/landing-page');
 var PackagePage = require('./components/package-page');
+var {IntlProvider}  = require('react-intl');
 
 const App = React.createClass({
   render() {
     return (
-      <div>
-        {this.props.children}
-      </div>
+      <IntlProvider locale="en">
+        <div>
+          {this.props.children}
+        </div>
+      </IntlProvider>
     )
   }
 });
@@ -16,9 +19,9 @@ const App = React.createClass({
 const routes = {
   path: '/',
   component: App,
-  indexRoute: { component: LandingPage },
+  indexRoute: {component: LandingPage},
   childRoutes: [
-    { path: 'package/:packageName', component: PackagePage }
+    {path: 'package/:packageName', component: PackagePage}
   ]
 };
 

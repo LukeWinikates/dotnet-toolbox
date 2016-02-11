@@ -6,6 +6,7 @@ var Divider = require('pui-react-dividers').Divider;
 var LeaderPanel = require('./layout').LeaderPanel;
 var {Row, Col} = require('pui-react-grids');
 var Panel = require('pui-react-panels').Panel;
+var {FormattedNumber} = require('react-intl');
 
 var PackageTile = React.createClass({
   render() {
@@ -15,7 +16,18 @@ var PackageTile = React.createClass({
           <Panel className="bg-accent-6 type-dark-1">
             <h4 className="package">{this.props.package.id}</h4>
             <p><strong>current version: </strong> {this.props.package.version }</p>
-            <p><strong>total downloads: </strong> {this.props.package.totalDownloads }</p>
+            <p><strong>total downloads: </strong>
+              {
+                (() => {
+                  if (this.props.package.totalDownloads) {
+                    return (<FormattedNumber value={this.props.package.totalDownloads}/>)
+                  }
+                  else {
+                    return (<span>not known</span>)
+                  }
+                })()
+              }
+            </p>
             <em>{this.props.package.description }</em>
           </Panel>
         </Link>
@@ -58,7 +70,7 @@ var RecentlyAddedCategory = React.createClass({
     return {};
   },
   render() {
-    if(this.state.packages) {
+    if (this.state.packages) {
       return (<Category category={{title: "Recently Added", packages: this.state.packages}}/>);
     }
     return (<marquee>...</marquee>);

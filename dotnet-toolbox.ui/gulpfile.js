@@ -77,8 +77,10 @@ gulp.task('components', function () {
           }
         ]
       },
+      devtool: "#source-map",
       output: {filename: 'application.js'}
-    })).pipe(gulp.dest('./dist/'))
+    }))
+    .pipe(gulp.dest('./dist/'))
     .pipe(livereload());
 });
 

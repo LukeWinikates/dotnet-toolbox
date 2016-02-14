@@ -1,0 +1,15 @@
+.package-tile .panel {
+  $package-quote-height: 100px;
+
+  em {
+    min-height: $package-quote-height;
+    max-height: $package-quote-height;
+    display: block;
+    overflow-y: hidden;
+    transition: max-height .3s;
+    &:hover {
+      position: relative;
+      max-height: 2000px;
+    }
+  }
+}

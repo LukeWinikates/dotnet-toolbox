@@ -11,7 +11,7 @@ var {FormattedNumber} = require('react-intl');
 var PackageTile = React.createClass({
   render() {
     return (
-      <Col md={4}>
+      <Col md={4} className="package-tile">
         <Link to={"/package/" + this.props.package.id}>
           <Panel className="bg-accent-6 type-dark-1">
             <h4 className="package">{this.props.package.id}</h4>

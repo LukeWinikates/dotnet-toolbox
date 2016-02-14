@@ -14,8 +14,10 @@ namespace dotnet_toolbox.api.Controllers
         private const string NINJECT = "Ninject";
         private const string WINDSOR = "Castle.Windsor";
         private const string AUTOFAC = "Autofac";
+        private const string STRUCTUREMAP = "StructureMap";
         private const string NUNIT = "NUnit";
         private const string XUNIT = "xunit";
+        private const string MSPEC = "Machine.Specifications";
         private IGetSetQuerier<Package> querier;
 
         public CategoriesController(IGetSetQuerier<Package> querier)
@@ -30,10 +32,10 @@ namespace dotnet_toolbox.api.Controllers
                     Packages = Packages(NANCY, ASP_NET_MVC)
                 },
                 new Category { Title = "Dependency Injection",
-                    Packages = Packages(NINJECT, WINDSOR, AUTOFAC)
+                    Packages = Packages(NINJECT, WINDSOR, AUTOFAC, STRUCTUREMAP)
                 },
                 new Category { Title = "Unit Test Runners",
-                    Packages = Packages(XUNIT, NUNIT)
+                    Packages = Packages(XUNIT, NUNIT, MSPEC)
                 }
             };
         }
@@ -43,6 +45,6 @@ namespace dotnet_toolbox.api.Controllers
             return packages.Select(querier.Get);
         }
         
-        public static IEnumerable<string> KeyPackageNames = new string[] { NANCY, ASP_NET_MVC, NINJECT, WINDSOR, AUTOFAC, XUNIT, NUNIT };
+        public static IEnumerable<string> KeyPackageNames = new string[] { NANCY, ASP_NET_MVC, NINJECT, WINDSOR, AUTOFAC, STRUCTUREMAP, XUNIT, NUNIT, MSPEC };
     }
 }

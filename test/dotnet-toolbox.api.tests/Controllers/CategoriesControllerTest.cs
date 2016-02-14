@@ -19,8 +19,8 @@ namespace dotnet_toolbox.api.tests.Controllers
             var categories = new CategoriesController(mockGetQuerier.Object).GetAll();
             Assert.Equal(new[] { "Web Frameworks", "Dependency Injection", "Unit Test Runners" }, categories.Select(c => c.Title));
             Assert.Equal(new[] { "Nancy", "Microsoft.AspNet.Mvc" },categories.First().Packages.Select(l => l.Name));
-            Assert.Equal(new[] { "Ninject", "Castle.Windsor", "Autofac"},categories.ElementAt(1).Packages.Select(l => l.Name));
-            Assert.Equal(new[] { "xunit", "NUnit" },categories.ElementAt(2).Packages.Select(l => l.Name));
+            Assert.Equal(new[] { "Ninject", "Castle.Windsor", "Autofac", "StructureMap"},categories.ElementAt(1).Packages.Select(l => l.Name));
+            Assert.Equal(new[] { "xunit", "NUnit", "Machine.Specifications" },categories.ElementAt(2).Packages.Select(l => l.Name));
         }
 
         private Package PackageFromName(string name)

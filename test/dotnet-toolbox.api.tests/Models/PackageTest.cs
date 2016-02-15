@@ -3,6 +3,7 @@ using Xunit;
 using dotnet_toolbox.api.Models;
 using dotnet_toolbox.api.Query;
 using StackExchange.Redis;
+using System.Collections.Generic;
 
 namespace dotnet_toolbox.api.tests.Models
 {
@@ -28,7 +29,13 @@ namespace dotnet_toolbox.api.tests.Models
                 Version = "1.5.7",
                 Owners = "Perseus Fizzibuzz",
                 Description = "Popular Examples",
-                TotalDownloads = 30 * 1000
+                TotalDownloads = 30 * 1000,
+                Versions =  new List<Version> {
+                        new Version {
+                            VersionNumber = "1.5.7",
+                            Timestamp = "Sometime"
+                        }
+                }
             }.AsRedisHash();
 
             Assert.Equal("Foo", fields.ValueFor("Name"));
@@ -36,6 +43,9 @@ namespace dotnet_toolbox.api.tests.Models
             Assert.Equal("1.5.7", fields.ValueFor("Version"));
             Assert.Equal("Perseus Fizzibuzz", fields.ValueFor("Owners"));
             Assert.Equal("Popular Examples", fields.ValueFor("Description"));
+            Assert.Equal(1, fields.IntValueFor("Versions.Count"));
+            Assert.Equal("1.5.7", fields.ValueFor("Versions[0].VersionNumber"));
+            Assert.Equal("Sometime", fields.ValueFor("Versions[0].Timestamp"));
             Assert.Equal(30 * 1000, fields.ValueFor("TotalDownloads"));
         }
 
@@ -48,7 +58,10 @@ namespace dotnet_toolbox.api.tests.Models
                 new HashEntry("Version", "1.5.7"),
                 new HashEntry("Owners", "Perseus Fizzibuzz"),
                 new HashEntry("Description", "Popular Examples"),
-                new HashEntry("TotalDownloads", 30 * 1000)
+                new HashEntry("TotalDownloads", 30 * 1000),
+                new HashEntry("Versions.Count", 1),
+                new HashEntry("Versions[0].VersionNumber", "1.5.7"),
+                new HashEntry("Versions[0].Timestamp", "Sometime")
             };
 
             var package = new Package().DoTo(p => p.FromRedisHash(fields));
@@ -57,6 +70,7 @@ namespace dotnet_toolbox.api.tests.Models
             Assert.Equal("1.5.7", package.Version);
             Assert.Equal("Perseus Fizzibuzz", package.Owners);
             Assert.Equal("Popular Examples", package.Description);
+            Assert.Equal("1.5.7", package.Versions.First().VersionNumber);
             Assert.Equal(30 * 1000, package.TotalDownloads);
         }
     }

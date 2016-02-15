@@ -7,6 +7,7 @@ using dotnet_toolbox.api.Query;
 using dotnet_toolbox.api.NuspecCrawler;
 using dotnet_toolbox.api.DownloadStats;
 using dotnet_toolbox.api.Models;
+using dotnet_toolbox.api.VersionHistory;
 
 namespace dotnet_toolbox.api.BackgroundWorker
 {
@@ -40,12 +41,15 @@ namespace dotnet_toolbox.api.BackgroundWorker
             IGetSetQuerier<PackageDetails> querier = new RedisGetSetQuery<PackageDetails>(CreatePackagesDbConnection(), Constants.Redis.PackageKeyForName);
             this.jobQueue.DoTo(q => CategoriesController.KeyPackageNames.Select(n => { q.EnqueueJob(n); return true; }).ToArray());
             new BackgroundJobListener(timerProvider, CreatePackagesDbConnection(), Constants.Redis.PackageCrawlerJobQueueName)
-                .ListenWith(new Crawler(querier, new NuspecDownloader(), new JobQueue(CreatePackagesDbConnection(), Constants.Redis.DownloadStatsCheckerQueue)).CrawlProject);
+                .ListenWith(new Crawler(querier, new NuspecDownloader(),new JobQueue(CreatePackagesDbConnection(), Constants.Redis.DownloadStatsCheckerQueue)).CrawlProject);
             new BackgroundJobListener(timerProvider, CreatePackagesDbConnection(), Constants.Redis.DownloadStatsCheckerQueue)
                 .ListenWith(new DownloadStatsChecker(
                     new RedisGetSetQuery<Package>(CreatePackagesDbConnection(), Constants.Redis.PackageKeyForName), 
                     new RedisGetSetQuery<Stats>(CreatePackagesDbConnection(), Constants.Redis.PackageKeyForName), 
                     new DownloadStatsCheck()).LoadStats);
+            new BackgroundJobListener(timerProvider, CreatePackagesDbConnection(), Constants.Redis.PackageVersionsCrawlerJob)
+                .ListenWith(new VersionHistoryChecker(
+                    new RedisGetSetQuery<VersionsList>(CreatePackagesDbConnection(), Constants.Redis.PackageKeyForName), new VersionHistoryCheck()).LoadVersionHistory);
         }
 
         private IDatabase CreatePackagesDbConnection()
